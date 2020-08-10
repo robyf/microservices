@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.franzbecker.gradle-lombok' version '4.0.0'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR7'
+    }
+}
+
+group = "net.robyf.ms"
+version = "local"
+
+dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'com.h2database', name: 'h2'
+    implementation group: 'org.zalando', name: 'problem-spring-web', version: '0.25.2'
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+    implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testImplementation group: 'junit', name: 'junit'
+}
+
+processResources {
+    expand(project.properties)
+}
+
+test.finalizedBy(project.tasks.jacocoTestReport)
+
+bootRun {
+    systemProperties = [
+            'spring.profiles.active': 'local'
+    ]
+}
