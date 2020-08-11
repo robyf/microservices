@@ -25,6 +25,9 @@ spring:
     url: jdbc:h2:mem:userdb
     username: sa
     password:
+  sleuth:
+    sampler:
+      probability: 100
 
   jpa:
     generate-ddl: true
