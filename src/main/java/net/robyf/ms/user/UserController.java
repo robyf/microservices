@@ -29,11 +29,16 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
-@RequestMapping("/v1/users")
+@RequestMapping(UserController.BASE_PATH)
 @Consumes(MediaType.APPLICATION_JSON_VALUE)
 @Produces(MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class UserController {
+
+    public static final String BASE_PATH = "/v1/users";
+    public static final String LIST_ENDPOINT = "/";
+    public static final String GET_BY_ID_ENDPOINT = "/id/{id}";
+    public static final String GET_BY_EMAIL_ENDPOINT = "/email/{email}";
 
     @Autowired
     private UsersRepository repository;
@@ -41,7 +46,7 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @RequestMapping(method = RequestMethod.GET, path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, path = LIST_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> listUsers() {
         return ResponseEntity.ok(StreamSupport.stream(repository.findAll().spliterator(), false).map(it -> User.build(it)).collect(Collectors.toList()));
     }
@@ -52,7 +57,7 @@ public class UserController {
         return ResponseEntity.ok(service.createUser(request));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, path = GET_BY_ID_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Retrieves a user by id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = User.class),
@@ -62,7 +67,7 @@ public class UserController {
         return ResponseEntity.ok(service.getUserById(id));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, path = GET_BY_EMAIL_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUserByEmail(@Valid @Email @PathVariable final String email) {
         return ResponseEntity.ok(service.getUserByEmail(email));
     }
