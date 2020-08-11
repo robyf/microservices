@@ -1,5 +1,8 @@
 package net.robyf.ms.user;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import net.robyf.ms.user.api.AuthenticateRequest;
 import net.robyf.ms.user.api.AuthenticateResponse;
@@ -48,6 +51,11 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/id/{id}")
+    @ApiOperation(value = "Retrieves a user by id")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = User.class),
+            @ApiResponse(code = 404, message = "Not found")
+    })
     public ResponseEntity<User> getUserById(@Valid @PathVariable final UUID id) {
         return ResponseEntity.ok(service.getUserById(id));
     }
