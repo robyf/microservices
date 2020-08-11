@@ -12,10 +12,11 @@ import net.robyf.ms.user.persistence.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.zalando.problem.Problem;
 
@@ -35,7 +36,7 @@ import java.util.stream.StreamSupport;
 @Slf4j
 public class UserController {
 
-    public static final String BASE_PATH = "/v1/users";
+    public static final String BASE_PATH = "/v1/users"; // NOSONAR
     public static final String LIST_ENDPOINT = "/";
     public static final String GET_BY_ID_ENDPOINT = "/id/{id}";
     public static final String GET_BY_EMAIL_ENDPOINT = "/email/{email}";
@@ -46,18 +47,18 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @RequestMapping(method = RequestMethod.GET, path = LIST_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = LIST_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> listUsers() {
-        return ResponseEntity.ok(StreamSupport.stream(repository.findAll().spliterator(), false).map(it -> User.build(it)).collect(Collectors.toList()));
+        return ResponseEntity.ok(StreamSupport.stream(repository.findAll().spliterator(), false).map(User::build).collect(Collectors.toList()));
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createUser(@Valid @RequestBody final CreateUserRequest request) {
         log.info("Create user request {}", request);
         return ResponseEntity.ok(service.createUser(request));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = GET_BY_ID_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = GET_BY_ID_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Retrieves a user by id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = User.class),
@@ -67,12 +68,12 @@ public class UserController {
         return ResponseEntity.ok(service.getUserById(id));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = GET_BY_EMAIL_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = GET_BY_EMAIL_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUserByEmail(@Valid @Email @PathVariable final String email) {
         return ResponseEntity.ok(service.getUserByEmail(email));
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticateResponse> authenticate(@Valid @RequestBody final AuthenticateRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
     }

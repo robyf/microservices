@@ -19,8 +19,8 @@ public class User {
     private String lastName;
     private String email;
 
-    @Tolerate
-    public User() {
+    @Tolerate // NOSONAR
+    public User() { // NOSONAR
     }
 
     public static User build(final PersistenceUser pUser) {

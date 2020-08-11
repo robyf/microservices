@@ -1,7 +1,5 @@
 package net.robyf.ms.user;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import net.robyf.ms.user.api.User;
 import net.robyf.ms.user.persistence.PersistenceUser;
 import net.robyf.ms.user.persistence.UsersRepository;
@@ -16,11 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.zalando.problem.Problem;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -44,7 +43,7 @@ public class UserControllerTest {
         ResponseEntity<User[]> get = restTemplate.getForEntity(uri, User[].class);
         assertThat(get.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(get.getBody()).isNotNull();
-        assertThat(get.getBody().length).isEqualTo(0);
+        assertThat(get.getBody()).isEmpty();
     }
 
     @Test
