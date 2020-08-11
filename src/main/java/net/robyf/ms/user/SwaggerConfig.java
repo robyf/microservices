@@ -34,7 +34,8 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("User management service").description("Manages users.")
+        return new ApiInfoBuilder().title("User management service")
+                .description("Manages users.")
                 .version(appVersion).build();
     }
 /*
