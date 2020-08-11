@@ -27,7 +27,10 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
 //                .globalResponses(HttpMethod.GET, defaultMessages())
 //                .globalResponses(HttpMethod.POST, defaultMessages())
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo())
+                .select()
+                .paths(PathSelectors.ant("/user-service/v1/**"))
+                .build();
     }
 
     private ApiInfo apiInfo() {
