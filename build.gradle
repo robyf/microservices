@@ -5,6 +5,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.2.RELEASE'
     id 'io.franzbecker.gradle-lombok' version '4.0.0'
     id 'org.sonarqube' version '3.0'
+    id 'maven-publish'
 }
 
 repositories {
@@ -53,4 +54,30 @@ bootRun {
     systemProperties = [
             'spring.profiles.active': 'local'
     ]
+}
+
+task apiJar(type: Jar) {
+    archiveClassifier = 'api'
+    from sourceSets.main.output
+    include '**/api/**'
+}
+
+artifacts {
+    archives apiJar
+}
+
+publishing {
+    repositories {
+        maven {
+            url = "/Users/roberto/work/microservices/repo"
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'user-service-api'
+            version = '1.0-SNAPSHOT'
+            artifact apiJar
+        }
+    }
 }
