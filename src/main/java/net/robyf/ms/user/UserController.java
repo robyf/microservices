@@ -8,7 +8,6 @@ import net.robyf.ms.user.api.AuthenticateRequest;
 import net.robyf.ms.user.api.AuthenticateResponse;
 import net.robyf.ms.user.api.CreateUserRequest;
 import net.robyf.ms.user.api.User;
-import net.robyf.ms.user.persistence.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +25,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping(UserController.BASE_PATH)
@@ -42,14 +39,11 @@ public class UserController {
     public static final String GET_BY_EMAIL_ENDPOINT = "/email/{email}";
 
     @Autowired
-    private UsersRepository repository;
-
-    @Autowired
     private UserService service;
 
     @GetMapping(path = LIST_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> listUsers() {
-        return ResponseEntity.ok(StreamSupport.stream(repository.findAll().spliterator(), false).map(User::build).collect(Collectors.toList()));
+        return ResponseEntity.ok(service.getAllUsers());
     }
 
     @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,6 +69,7 @@ public class UserController {
 
     @PostMapping(path = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticateResponse> authenticate(@Valid @RequestBody final AuthenticateRequest request) {
+        log.info("Authenticate request {}", request);
         return ResponseEntity.ok(service.authenticate(request));
     }
 

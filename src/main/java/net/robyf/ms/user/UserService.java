@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class UserService {
@@ -31,7 +34,7 @@ public class UserService {
                 .build();
         repository.save(pUser);
 
-        return User.build(pUser);
+        return pUser.asUser();
     }
 
     public User getUserById(final UUID id) {
@@ -39,7 +42,7 @@ public class UserService {
         if (pUser.isEmpty()) {
             throw Problem.valueOf(Status.NOT_FOUND, "User with id " + id + " not found");
         }
-        return User.build(pUser.get());
+        return pUser.get().asUser();
     }
 
     public User getUserByEmail(final String email) {
@@ -47,7 +50,7 @@ public class UserService {
         if (pUser.isEmpty()) {
             throw Problem.valueOf(Status.NOT_FOUND, "User with email " + email + " not found");
         }
-        return User.build(pUser.get());
+        return pUser.get().asUser();
     }
 
     public AuthenticateResponse authenticate(final AuthenticateRequest request) {
@@ -60,7 +63,13 @@ public class UserService {
         if (!request.getPassword().equals(pUser.getPassword())) {
             return AuthenticateResponse.builder().status(AuthenticateStatus.FAIL).build();
         }
-        return AuthenticateResponse.builder().status(AuthenticateStatus.SUCCESS).user(User.build(pUser)).build();
+        return AuthenticateResponse.builder().status(AuthenticateStatus.SUCCESS).user(pUser.asUser()).build();
+    }
+
+    public List<User> getAllUsers() {
+        return StreamSupport.stream(repository.findAll().spliterator(), false)
+                .map(u -> u.asUser())
+                .collect(Collectors.toList());
     }
 
 }

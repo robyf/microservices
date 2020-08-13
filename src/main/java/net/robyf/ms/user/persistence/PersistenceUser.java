@@ -3,6 +3,7 @@ package net.robyf.ms.user.persistence;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
+import net.robyf.ms.user.api.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +39,15 @@ public class PersistenceUser {
 
     @Tolerate
     public PersistenceUser() {
+    }
+
+    public User asUser() {
+        return User.builder()
+                .id(this.getId())
+                .firstName(this.getFirstName())
+                .lastName(this.getLastName())
+                .email(this.getEmail())
+                .build();
     }
 
 }

@@ -23,13 +23,4 @@ public class User {
     public User() { // NOSONAR
     }
 
-    public static User build(final PersistenceUser pUser) {
-        return User.builder()
-                .id(pUser.getId())
-                .firstName(pUser.getFirstName())
-                .lastName(pUser.getLastName())
-                .email(pUser.getEmail())
-                .build();
-    }
-
 }

@@ -57,7 +57,7 @@ bootRun {
 }
 
 task apiJar(type: Jar) {
-    archiveClassifier = 'api'
+    archiveBaseName = 'user-service-api'
     from sourceSets.main.output
     include '**/api/**'
 }
