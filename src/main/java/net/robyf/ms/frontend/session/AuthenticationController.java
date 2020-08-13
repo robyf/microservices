@@ -32,13 +32,14 @@ public class AuthenticationController {
     @PostMapping(path = LOGIN_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> login(@Valid @RequestBody final LoginRequest request,
                                       HttpServletRequest httpRequest) {
-        log.info("Login request {}", request);
+        log.info("Login request for {}", request.getEmail());
         service.login(request, httpRequest);
         return ResponseEntity.ok(null);
     }
 
     @PostMapping(path = LOGOUT_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> logout(HttpServletRequest httpRequest) {
+        log.info("Logout request");
         service.logout(httpRequest);
         return ResponseEntity.ok(null);
     }
