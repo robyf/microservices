@@ -39,6 +39,7 @@ public class AuthenticationService {
         this.sessions.findByPrincipalName(authResponse.getUser().getId().toString()).values().forEach(s -> {
             if (!s.getId().equals(session.getId())) {
                 log.info("Another session for user: {}", s.getId());
+                // TODO: expire these sessions
             }
         });
 
