@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class Query implements GraphQLQueryResolver {
+public class UserQuery implements GraphQLQueryResolver {
 
     @Autowired
     private UserServiceClient userService;

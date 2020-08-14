@@ -46,6 +46,7 @@ dependencies {
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.10.3'
 
     implementation group: 'net.robyf.ms', name: 'user-service-api', version: '1.0-SNAPSHOT'
+    implementation group: 'net.robyf.ms', name: 'lending-service-api', version: '1.0-SNAPSHOT'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'junit', name: 'junit'

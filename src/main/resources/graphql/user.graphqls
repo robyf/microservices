@@ -1,3 +1,8 @@
+extend type Query {
+    # The current logged in user
+    currentUser: User
+}
+
 # A user.
 type User {
     # The user unique identifier.
