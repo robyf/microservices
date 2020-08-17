@@ -8,16 +8,21 @@ import net.robyf.ms.lending.api.CreditDecisionStatus;
 import net.robyf.ms.lending.client.ScoringServiceClient;
 import net.robyf.ms.lending.persistence.AccountsRepository;
 import net.robyf.ms.lending.persistence.CreditDecisionsRepository;
+import net.robyf.ms.lending.persistence.EventType;
+import net.robyf.ms.lending.persistence.EventsRepository;
 import net.robyf.ms.lending.persistence.PersistenceAccount;
 import net.robyf.ms.lending.persistence.PersistenceCreditDecision;
+import net.robyf.ms.lending.persistence.PersistenceEvent;
 import net.robyf.ms.scoring.api.ScoringRequest;
 import net.robyf.ms.scoring.api.ScoringResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,6 +37,9 @@ public class CreditDecisionService {
 
     @Autowired
     private AccountsRepository accountsRepository;
+
+    @Autowired
+    private EventsRepository eventsRepository;
 
     @Autowired
     private ScoringServiceClient scoringService;
@@ -85,6 +93,36 @@ public class CreditDecisionService {
 
         pCd.setStatus(CreditDecisionStatus.DECLINED);
         repository.save(pCd);
+
+        return pCd.asCreditDecision();
+    }
+
+    @Transactional
+    public CreditDecision accept(final UUID accountId, final UUID creditDecisionId) {
+        PersistenceAccount pAccount = checkActiveAccount(accountId);
+        if (pAccount.getStatus() != AccountStatus.NEW) {
+            throw Problem.valueOf(Status.PRECONDITION_FAILED, "Account not in NEW state");
+        }
+
+        PersistenceCreditDecision pCd = checkCorrectAccount(repository.findById(creditDecisionId), accountId);
+        if (pCd.getStatus() != CreditDecisionStatus.PENDING) {
+            throw Problem.valueOf(Status.PRECONDITION_FAILED, "Credit decision " + creditDecisionId + " not in PENDING state");
+        }
+
+        pCd.setStatus(CreditDecisionStatus.APPROVED);
+        repository.save(pCd);
+
+        pAccount.setBalance(pCd.getAmount());
+        pAccount.setStatus(AccountStatus.ACTIVE);
+        accountsRepository.save(pAccount);
+
+        PersistenceEvent pEvent = PersistenceEvent.builder()
+                .accountId(accountId)
+                .amount(pCd.getAmount())
+                .type(EventType.CREDIT_DECISION_ACCEPTED)
+                .time(LocalDateTime.now())
+                .build();
+        eventsRepository.save(pEvent);
 
         return pCd.asCreditDecision();
     }

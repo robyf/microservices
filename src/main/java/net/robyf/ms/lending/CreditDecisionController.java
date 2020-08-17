@@ -32,6 +32,7 @@ public class CreditDecisionController {
     public static final String GET_VALID_BY_ACCOUNT_ENDPOINT = "/{accountId}/valid";
     public static final String CREATE_ENDPOINT = "/{accountId}";
     public static final String DECLINE_ENDPOINT = "/{accountId}/{creditDecisionId}/decline";
+    public static final String ACCEPT_ENDPOINT = "/{accountId}/{creditDecisionId}/accept";
 
     @Autowired
     private CreditDecisionService service;
@@ -53,9 +54,15 @@ public class CreditDecisionController {
     }
 
     @PostMapping(path = DECLINE_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreditDecision> createForAccount(@Valid @PathVariable final UUID accountId,
-                                                           @Valid @PathVariable final UUID creditDecisionId) {
+    public ResponseEntity<CreditDecision> decline(@Valid @PathVariable final UUID accountId,
+                                                  @Valid @PathVariable final UUID creditDecisionId) {
         return ResponseEntity.ok(service.decline(accountId, creditDecisionId));
+    }
+
+    @PostMapping(path = ACCEPT_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CreditDecision> accept(@Valid @PathVariable final UUID accountId,
+                                                 @Valid @PathVariable final UUID creditDecisionId) {
+        return ResponseEntity.ok(service.accept(accountId, creditDecisionId));
     }
 
 }
