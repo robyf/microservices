@@ -10,6 +10,9 @@ plugins {
 
 repositories {
     jcenter()
+    maven {
+        url = "/Users/roberto/work/microservices/repo"
+    }
 }
 
 dependencyManagement {
@@ -28,11 +31,15 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
     implementation group: 'com.h2database', name: 'h2'
     implementation group: 'org.zalando', name: 'problem-spring-web', version: '0.25.2'
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
     implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
+
+    implementation group: 'net.robyf.ms', name: 'scoring-service-api', version: '1.0-SNAPSHOT'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'junit', name: 'junit'

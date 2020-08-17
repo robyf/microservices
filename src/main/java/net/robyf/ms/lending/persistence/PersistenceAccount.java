@@ -33,7 +33,7 @@ public class PersistenceAccount {
     @Column (name = "status", length = 32, nullable = false)
     private AccountStatus status;
 
-    @Column (name = "balance", length = 10, precision = 2, nullable = false)
+    @Column (name = "balance", precision = 10, scale = 2, nullable = false)
     private BigDecimal balance;
 
     @Tolerate
