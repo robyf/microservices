@@ -119,6 +119,7 @@ public class CreditDecisionService {
         PersistenceEvent pEvent = PersistenceEvent.builder()
                 .accountId(accountId)
                 .amount(pCd.getAmount())
+                .resultingBalance(pCd.getAmount())
                 .type(EventType.CREDIT_DECISION_ACCEPTED)
                 .time(LocalDateTime.now())
                 .build();

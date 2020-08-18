@@ -39,6 +39,9 @@ public class PersistenceEvent {
     @Column (name = "amount", precision = 10, scale = 2, nullable = true)
     private BigDecimal amount;
 
+    @Column (name = "resulting_balance", precision = 10, scale = 2, nullable = true)
+    private BigDecimal resultingBalance;
+
     @Tolerate
     public PersistenceEvent() {
     }
@@ -49,6 +52,7 @@ public class PersistenceEvent {
                 .time(this.getTime())
                 .type(this.getType().getCode())
                 .amount(this.getAmount() != null ? this.getAmount().multiply(BigDecimal.valueOf(this.getType().getMonetaryImpact())) : null)
+                .resultingBalance(this.getResultingBalance())
                 .build();
     }
 

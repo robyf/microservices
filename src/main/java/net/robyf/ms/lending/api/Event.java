@@ -19,6 +19,7 @@ public class Event {
     private LocalDateTime time;
     private int type;
     private BigDecimal amount;
+    private BigDecimal resultingBalance;
 
     @Tolerate // NOSONAR
     public Event() { // NOSONAR
