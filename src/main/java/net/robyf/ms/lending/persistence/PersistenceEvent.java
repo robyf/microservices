@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -31,7 +31,7 @@ public class PersistenceEvent {
     private UUID accountId;
 
     @Column (name = "time", nullable = false)
-    private LocalDateTime time;
+    private ZonedDateTime time;
 
     @Column (name = "type", length = 32, nullable = false)
     private EventType type;

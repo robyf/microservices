@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.experimental.Tolerate;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Data
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Event {
 
     private UUID id;
-    private LocalDateTime time;
+    private ZonedDateTime time;
     private int type;
     private BigDecimal amount;
     private BigDecimal resultingBalance;

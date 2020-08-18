@@ -17,6 +17,7 @@ import org.zalando.problem.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -69,7 +70,7 @@ public class AccountService {
                 .amount(request.getAmount())
                 .resultingBalance(pAccount.getBalance())
                 .type(EventType.DEPOSIT)
-                .time(LocalDateTime.now())
+                .time(ZonedDateTime.now())
                 .build();
         eventsRepository.save(pEvent);
 
@@ -100,7 +101,7 @@ public class AccountService {
                 .amount(request.getAmount())
                 .resultingBalance(pAccount.getBalance())
                 .type(EventType.WITHDRAW)
-                .time(LocalDateTime.now())
+                .time(ZonedDateTime.now())
                 .build();
         eventsRepository.save(pEvent);
 

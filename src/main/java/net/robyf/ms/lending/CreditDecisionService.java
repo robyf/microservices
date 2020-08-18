@@ -23,6 +23,7 @@ import org.zalando.problem.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -121,7 +122,7 @@ public class CreditDecisionService {
                 .amount(pCd.getAmount())
                 .resultingBalance(pCd.getAmount())
                 .type(EventType.CREDIT_DECISION_ACCEPTED)
-                .time(LocalDateTime.now())
+                .time(ZonedDateTime.now())
                 .build();
         eventsRepository.save(pEvent);
 
