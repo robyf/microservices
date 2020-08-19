@@ -17,6 +17,10 @@ function Users() {
   return <h2>Users</h2>;
 }
 
+function Login() {
+  return <h2>Login</h2>;
+}
+
 function NotFound() {
   return <h2>404</h2>;
 }
@@ -39,11 +43,17 @@ const Routes = () => {
         component={About}
         layout={MainLayout}
         path="/about"
+        authenticated
       />
       <RouteWithLayout
         component={Users}
         layout={MainLayout}
         path="/users"
+      />
+      <RouteWithLayout
+        component={Login}
+        layout={MainLayout}
+        path="/login"
       />
       <RouteWithLayout
         component={NotFound}

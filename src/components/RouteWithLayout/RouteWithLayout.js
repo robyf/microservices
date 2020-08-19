@@ -1,9 +1,16 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { User } from '../../types';
 
 const RouteWithLayout = props => {
-  const { layout: Layout, component: Component, path, ...rest } = props;
+  const { layout: Layout, component: Component, path, user, authenticated, ...rest } = props;
+
+  if (authenticated && !user) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Route
@@ -21,7 +28,15 @@ const RouteWithLayout = props => {
 RouteWithLayout.propTypes = {
   component: PropTypes.any.isRequired,
   layout: PropTypes.any.isRequired,
-  path: PropTypes.string
+  path: PropTypes.string,
+  authenticated: PropTypes.bool,
+  user: User.propTypes,
 };
 
-export default RouteWithLayout;
+const mapStateToProps = state => {
+  return {
+    user: state.session.user,
+  };
+};
+
+export default connect(mapStateToProps)(RouteWithLayout);
