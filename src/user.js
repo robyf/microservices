@@ -1,23 +1,21 @@
-import { User } from '../types';
-
-const url = "/api/graphql";
+const url = '/api/graphql'
 
 const fetchWithTimeout = (requestUrl, params) => {
   return new Promise((resolve, reject) => {
     let didTimeout = false;
     const timeout = setTimeout(() => {
       didTimeout = true;
-      reject(new Error("Request timed out"));
+      reject(new Error('Request timed out'));
     }, 5000);
 
     fetch(requestUrl, params)
-      .then((response) => {
+      .then(response => {
         clearTimeout(timeout);
         if (!didTimeout) {
           resolve(response);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         if (didTimeout) {
           return;
         }
@@ -28,18 +26,14 @@ const fetchWithTimeout = (requestUrl, params) => {
 
 const currentUser = () => {
   return fetchWithTimeout(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/graphql",
+      'Content-Type': 'application/graphql',
     },
     body: `{ currentUser { id firstName lastName email } }`,
-  }).then((response) => response.json()).then((response => {
-    if (response.data.currentUser) {
-      return new User(response.data.currentUser);
-    } else {
-      return null;
-    }
-  }));
+  }).then(response => response.json());
 };
 
-export { currentUser };
+export {
+  currentUser,
+};

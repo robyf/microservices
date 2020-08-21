@@ -3,7 +3,9 @@ import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithLayout } from './components';
 import { Main as MainLayout } from './layouts';
+import { Minimal as MinimalLayout } from './layouts';
 
+import { Login as LoginView } from './views';
 
 function Home() {
   return <h2>Home</h2>;
@@ -15,10 +17,6 @@ function About() {
 
 function Users() {
   return <h2>Users</h2>;
-}
-
-function Login() {
-  return <h2>Login</h2>;
 }
 
 function NotFound() {
@@ -38,6 +36,7 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/dashboard"
+        authenticated
       />
       <RouteWithLayout
         component={About}
@@ -51,8 +50,8 @@ const Routes = () => {
         path="/users"
       />
       <RouteWithLayout
-        component={Login}
-        layout={MainLayout}
+        component={LoginView}
+        layout={MinimalLayout}
         path="/login"
       />
       <RouteWithLayout
