@@ -6,10 +6,7 @@ import { Main as MainLayout } from './layouts';
 import { Minimal as MinimalLayout } from './layouts';
 
 import { Login as LoginView } from './views';
-
-function Home() {
-  return <h2>Home</h2>;
-}
+import { Dashboard as DashboardView } from './views';
 
 function About() {
   return <h2>About</h2>;
@@ -32,7 +29,7 @@ const Routes = () => {
         to="/dashboard"
       />
       <RouteWithLayout
-        component={Home}
+        component={DashboardView}
         exact
         layout={MainLayout}
         path="/dashboard"

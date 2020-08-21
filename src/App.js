@@ -20,9 +20,7 @@ const App = ({ setUser }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const user = await currentUser();
-      console.log('Fetched user: ', user);
       if (user) {
-        console.log('x');
         setUser(user);
       }
       setLoading(false);
