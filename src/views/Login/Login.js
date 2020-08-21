@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 
 import { login } from '../../api/session';
 import { currentUser } from '../../api/user';
-import { setUser } from '../../redux/actions'
+import { setUser } from '../../redux/actions';
 
 import './Login.css';
 import logo from '../../ac-logo.svg';

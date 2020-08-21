@@ -43,6 +43,19 @@ const login = (username, password) => {
   });
 };
 
+const logout = (username, password) => {
+  return fetchWithTimeout(`${url}/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then(response => {
+    console.log('response', response);
+    return true;
+  });
+};
+
 export {
   login,
+  logout,
 };
