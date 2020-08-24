@@ -11,7 +11,7 @@ public interface CreditDecisionsRepository extends CrudRepository<PersistenceCre
 
     List<PersistenceCreditDecision> findByAccountId(UUID accountId);
 
-    @Query("select cd from PersistenceCreditDecision cd where cd.accountId = ?1 and (cd.status = 'ACTIVE' or cd.status = 'PENDING')")
+    @Query("select cd from PersistenceCreditDecision cd where cd.accountId = ?1 and (cd.status = 'APPROVED' or cd.status = 'PENDING')")
     Optional<PersistenceCreditDecision> findValidByAccountId(UUID accountId);
 
 }
