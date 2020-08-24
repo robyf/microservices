@@ -7,6 +7,7 @@ import {
 import { connect } from 'react-redux';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 import { currentUser } from './api/user';
 import { setUser } from './redux/actions'

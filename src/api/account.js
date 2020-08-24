@@ -34,7 +34,6 @@ const lendingAccount = () => {
     },
     body: `{ lendingAccount { id status balance } }`,
   }).then((response) => response.json()).then((response => {
-    console.log('Response', response);
     if (response.data.lendingAccount) {
       return new Account(response.data.lendingAccount);
     } else {
@@ -51,7 +50,6 @@ const createLendingAccount = () => {
     },
     body: `mutation { createLendingAccount { id status balance } }`,
   }).then((response) => response.json()).then((response => {
-    console.log('Response', response);
     if (response.data.createLendingAccount) {
       return new Account(response.data.createLendingAccount);
     } else {
@@ -68,7 +66,6 @@ const validCreditDecision = accountId => {
     },
     body: `{ validCreditDecision(accountId:"${accountId}") { id status positive amount } }`,
   }).then((response) => response.json()).then((response => {
-    console.log('Response', response);
     if (response.data.validCreditDecision) {
       return new CreditDecision(response.data.validCreditDecision);
     } else {
@@ -77,4 +74,21 @@ const validCreditDecision = accountId => {
   }));
 };
 
-export { lendingAccount, createLendingAccount, validCreditDecision };
+const createCreditDecision = (accountId, income) => {
+  return fetchWithTimeout(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/graphql",
+    },
+    body: `mutation { createCreditDecision(accountId:"${accountId}", income:${income}) { id status positive amount } }`,
+  }).then((response) => response.json()).then((response => {
+    console.log('Response', response);
+    if (response.data.createCreditDecision) {
+      return new CreditDecision(response.data.createCreditDecision);
+    } else {
+      return null;
+    }
+  }));
+};
+
+export { lendingAccount, createLendingAccount, validCreditDecision, createCreditDecision };

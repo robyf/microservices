@@ -3,18 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Loading } from '../../components';
+import { Scoring } from './components';
 
 import { Account, CreditDecision } from '../../types';
 import { lendingAccount, createLendingAccount, validCreditDecision } from '../../api/account';
-import { setAccount } from '../../redux/actions';
+import { setAccount, setCreditDecision } from '../../redux/actions';
 
-const Dashboard = ({ account, setAccount }) => {
+const Dashboard = ({ account, creditDecision, setAccount, setCreditDecision }) => {
 
   const [loading, setLoading] = React.useState(true);
+  const [scoring, setScoring] = React.useState(false);
 
   React.useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setScoring(false);
 
       let currentAccount;
       if (account) {
@@ -31,11 +34,10 @@ const Dashboard = ({ account, setAccount }) => {
         setAccount(acc);
       }
 
-      const cd = await validCreditDecision(currentAccount.id);
-      console.log("Credit Decision", cd);
-
-      if (currentAccount.status === 'NEW' && !cd) {
-        console.log('Should start scoring');
+      if (!creditDecision) {
+        const cd = await validCreditDecision(currentAccount.id);
+        console.log("Credit Decision", cd);
+        setCreditDecision(cd);
       }
 
       setLoading(false);
@@ -44,8 +46,16 @@ const Dashboard = ({ account, setAccount }) => {
     fetchData();
   }, []);
 
+  React.useEffect(() => {
+    setScoring(account && account.status === 'NEW' && !creditDecision);
+  }, [account, creditDecision]);
+
   if (loading) {
     return <Loading />;
+  }
+
+  if (scoring) {
+    return <Scoring />;
   }
 
   return (
@@ -55,13 +65,16 @@ const Dashboard = ({ account, setAccount }) => {
 
 Dashboard.propTypes = {
   account: Account.propTypes,
+  creditDecision: CreditDecision.propTypes,
   setAccount: PropTypes.func.isRequired,
+  setCreditDecision: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
   return {
     account: state.session.account,
+    creditDecision: state.session.creditDecision,
   };
 };
 
-export default connect(mapStateToProps, { setAccount })(Dashboard);
+export default connect(mapStateToProps, { setAccount, setCreditDecision })(Dashboard);

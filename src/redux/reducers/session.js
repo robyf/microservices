@@ -1,8 +1,9 @@
-import { LOGOUT, SET_USER, SET_ACCOUNT } from '../actionTypes';
+import { LOGOUT, SET_USER, SET_ACCOUNT, SET_CREDIT_DECISION } from '../actionTypes';
 
 const initialState = {
   user: undefined,
   account: undefined,
+  creditDecision: undefined,
 };
 
 export default function(state = initialState, action) {
@@ -18,6 +19,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         account: action.payload,
+      };
+    case SET_CREDIT_DECISION:
+      return {
+        ...state,
+        creditDecision: action.payload,
       };
     default:
       return state;
