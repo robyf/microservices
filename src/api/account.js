@@ -91,4 +91,21 @@ const createCreditDecision = (accountId, income) => {
   }));
 };
 
-export { lendingAccount, createLendingAccount, validCreditDecision, createCreditDecision };
+const acceptCreditDecision = (accountId, creditDecisionId) => {
+  return fetchWithTimeout(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/graphql",
+    },
+    body: `mutation { acceptCreditDecision(accountId:"${accountId}", creditDecisionId:"${creditDecisionId}") { id status positive amount } }`,
+  }).then((response) => response.json()).then((response => {
+    console.log('Response', response);
+    if (response.data.acceptCreditDecision) {
+      return new CreditDecision(response.data.acceptCreditDecision);
+    } else {
+      return null;
+    }
+  }));
+};
+
+export { lendingAccount, createLendingAccount, validCreditDecision, createCreditDecision, acceptCreditDecision };
