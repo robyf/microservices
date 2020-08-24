@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import { User } from '../../types';
 import { logout } from '../../api/session';
@@ -30,12 +30,14 @@ const Main = props => {
     <Container>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Navbar.Brand>
-          <img
-            alt="Awesome Credit"
-            src={logo}
-            height="30"
-            className="d-inline-block align-top"
-          />
+          <Link to="/dashboard">
+            <img
+              alt="Awesome Credit"
+              src={logo}
+              height="30"
+              className="d-inline-block align-top"
+            />
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">

@@ -8,12 +8,12 @@ import { Minimal as MinimalLayout } from './layouts';
 import { Login as LoginView } from './views';
 import { Dashboard as DashboardView } from './views';
 
-function About() {
-  return <h2>About</h2>;
+function Withdraw() {
+  return <h2>Withdraw page</h2>;
 }
 
-function Users() {
-  return <h2>Users</h2>;
+function Deposit() {
+  return <h2>Deposit page</h2>;
 }
 
 function NotFound() {
@@ -36,15 +36,16 @@ const Routes = () => {
         authenticated
       />
       <RouteWithLayout
-        component={About}
+        component={Withdraw}
         layout={MainLayout}
-        path="/about"
+        path="/withdraw"
         authenticated
       />
       <RouteWithLayout
-        component={Users}
+        component={Deposit}
         layout={MainLayout}
-        path="/users"
+        path="/deposit"
+        authenticated
       />
       <RouteWithLayout
         component={LoginView}

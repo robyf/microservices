@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Loading } from '../../components';
-import { Scoring, NegativeCreditDecision, PendingCreditDecision } from './components';
+import { Scoring,
+         NegativeCreditDecision,
+         PendingCreditDecision,
+         Dashboard as DashboardComponent
+       } from './components';
 
 import { Account, CreditDecision } from '../../types';
 import { lendingAccount, createLendingAccount, validCreditDecision } from '../../api/account';
@@ -71,7 +75,7 @@ const Dashboard = ({ account, creditDecision, setAccount, setCreditDecision }) =
   }
 
   return (
-    <h1>Dashboard</h1>
+    <DashboardComponent />
   );
 };
 
