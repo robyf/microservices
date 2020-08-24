@@ -10,11 +10,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 import { currentUser } from './api/user';
-import { setUser } from './redux/actions'
+import { lendingAccount, validCreditDecision } from './api/account';
+import { setUser, setAccount, setCreditDecision } from './redux/actions'
 import Routes from './Routes';
 import { Loading } from './components';
 
-const App = ({ setUser }) => {
+const App = ({ setUser, setAccount, setCreditDecision }) => {
 
   const [loading, setLoading] = React.useState(true);
 
@@ -23,6 +24,12 @@ const App = ({ setUser }) => {
       const user = await currentUser();
       if (user) {
         setUser(user);
+        const account = await lendingAccount();
+        if (account) {
+          setAccount(account);
+          const cd = await validCreditDecision(account.id);
+          setCreditDecision(cd);
+        }
       }
       setLoading(false);
     };
@@ -46,4 +53,4 @@ App.propTypes = {
   setUser: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setUser })(App);
+export default connect(null, { setUser, setAccount, setCreditDecision })(App);
