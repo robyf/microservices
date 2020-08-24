@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Loading } from '../../components';
-import { Scoring } from './components';
+import { Scoring, NegativeCreditDecision } from './components';
 
 import { Account, CreditDecision } from '../../types';
 import { lendingAccount, createLendingAccount, validCreditDecision } from '../../api/account';
@@ -13,11 +13,13 @@ const Dashboard = ({ account, creditDecision, setAccount, setCreditDecision }) =
 
   const [loading, setLoading] = React.useState(true);
   const [scoring, setScoring] = React.useState(false);
+  const [negative, setNegative] = React.useState(false);
 
   React.useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setScoring(false);
+      setNegative(false);
 
       let currentAccount;
       if (account) {
@@ -48,6 +50,7 @@ const Dashboard = ({ account, creditDecision, setAccount, setCreditDecision }) =
 
   React.useEffect(() => {
     setScoring(account && account.status === 'NEW' && !creditDecision);
+    setNegative(account && creditDecision && !creditDecision.positive);
   }, [account, creditDecision]);
 
   if (loading) {
@@ -56,6 +59,10 @@ const Dashboard = ({ account, creditDecision, setAccount, setCreditDecision }) =
 
   if (scoring) {
     return <Scoring />;
+  }
+
+  if (negative) {
+    return <NegativeCreditDecision />;
   }
 
   return (
