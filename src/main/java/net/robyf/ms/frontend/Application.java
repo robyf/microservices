@@ -1,5 +1,6 @@
 package net.robyf.ms.frontend;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +21,9 @@ public class Application {
     @Bean
     @Primary
     public ObjectMapper objectMapper() {
-        return new ObjectMapper().registerModule(new ProblemModule().withStackTraces());
+        final ObjectMapper objectMapper = new ObjectMapper().registerModule(new ProblemModule().withStackTraces());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper;
     }
 
     @Bean

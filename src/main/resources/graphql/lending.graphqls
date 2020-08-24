@@ -1,6 +1,15 @@
 extend type Query {
     # Lending account for current user
     lendingAccount: LendingAccount
+
+    validCreditDecision(accountId: ID!): CreditDecision
+}
+
+extend type Mutation {
+    createLendingAccount: LendingAccount
+
+    createCreditDecision(accountId: ID!, income: Float!): CreditDecision
+    acceptCreditDecision(accountId: ID!, creditDecisionId: ID!): CreditDecision
 }
 
 enum LendingAccountStatus {
@@ -8,6 +17,13 @@ enum LendingAccountStatus {
     ACTIVE
     FROZEN
     CLOSED
+}
+
+enum CreditDecisionStatus {
+    PENDING
+    APPROVED
+    DECLINED
+    EXPIRED
 }
 
 # A lending account.
@@ -18,4 +34,11 @@ type LendingAccount {
     status: LendingAccountStatus!
     # Current account balance.
     balance: Float!
+}
+
+type CreditDecision {
+    id: ID!
+    status: CreditDecisionStatus!
+    positive: Boolean!
+    amount: Float!
 }

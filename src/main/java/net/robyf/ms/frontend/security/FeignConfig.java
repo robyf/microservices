@@ -2,6 +2,7 @@ package net.robyf.ms.frontend.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import feign.Logger;
 import feign.RequestInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -41,5 +42,10 @@ public class FeignConfig {
             }
         };
     }
-
+/*
+    @Bean
+    Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
+    }
+*/
 }
