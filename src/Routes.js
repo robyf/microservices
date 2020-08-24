@@ -7,10 +7,7 @@ import { Minimal as MinimalLayout } from './layouts';
 
 import { Login as LoginView } from './views';
 import { Dashboard as DashboardView } from './views';
-
-function Withdraw() {
-  return <h2>Withdraw page</h2>;
-}
+import { Withdraw as WithdrawView } from './views';
 
 function Deposit() {
   return <h2>Deposit page</h2>;
@@ -36,7 +33,7 @@ const Routes = () => {
         authenticated
       />
       <RouteWithLayout
-        component={Withdraw}
+        component={WithdrawView}
         layout={MainLayout}
         path="/withdraw"
         authenticated
