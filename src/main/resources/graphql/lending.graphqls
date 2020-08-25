@@ -10,6 +10,9 @@ extend type Mutation {
 
     createCreditDecision(accountId: ID!, income: Float!): CreditDecision
     acceptCreditDecision(accountId: ID!, creditDecisionId: ID!): CreditDecision
+
+    withdraw(accountId: ID!, amount: Float!): MonetaryTransactionResponse
+    deposit(accountId: ID!, amount: Float!): MonetaryTransactionResponse
 }
 
 enum LendingAccountStatus {
@@ -41,4 +44,8 @@ type CreditDecision {
     status: CreditDecisionStatus!
     positive: Boolean!
     amount: Float!
+}
+
+type MonetaryTransactionResponse {
+    resultingBalance: Float!
 }

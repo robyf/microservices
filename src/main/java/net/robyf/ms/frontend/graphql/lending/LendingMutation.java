@@ -1,7 +1,6 @@
 package net.robyf.ms.frontend.graphql.lending;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import net.robyf.ms.frontend.client.CustomFeignClientException;
 import net.robyf.ms.frontend.client.LendingServiceClient;
@@ -9,6 +8,8 @@ import net.robyf.ms.frontend.graphql.ClientException;
 import net.robyf.ms.lending.api.Account;
 import net.robyf.ms.lending.api.CreateCreditDecisionRequest;
 import net.robyf.ms.lending.api.CreditDecision;
+import net.robyf.ms.lending.api.MonetaryTransactionRequest;
+import net.robyf.ms.lending.api.MonetaryTransactionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -61,6 +62,38 @@ public class LendingMutation implements GraphQLMutationResolver {
             log.error("Error accepting credit decision", fce);
             throw new ClientException(fce);
         }
+    }
+
+    public MonetaryTransactionResponse withdraw(final UUID accountId, final BigDecimal amount) {
+        log.info("Call to create withdraw");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof UsernamePasswordAuthenticationToken) {
+            UUID userId = UUID.fromString(((UsernamePasswordAuthenticationToken) auth).getName());
+            try {
+                MonetaryTransactionRequest request = MonetaryTransactionRequest.builder().amount(amount).build();
+                return lendingService.withdraw(userId, accountId, request);
+            } catch(CustomFeignClientException fce) {
+                log.error("Error making a withdraw", fce);
+                throw new ClientException(fce);
+            }
+        }
+        return null;
+    }
+
+    public MonetaryTransactionResponse deposit(final UUID accountId, final BigDecimal amount) {
+        log.info("Call to create deposit");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof UsernamePasswordAuthenticationToken) {
+            UUID userId = UUID.fromString(((UsernamePasswordAuthenticationToken) auth).getName());
+            try {
+                MonetaryTransactionRequest request = MonetaryTransactionRequest.builder().amount(amount).build();
+                return lendingService.deposit(userId, accountId, request);
+            } catch(CustomFeignClientException fce) {
+                log.error("Error making a deposit", fce);
+                throw new ClientException(fce);
+            }
+        }
+        return null;
     }
 
 }
