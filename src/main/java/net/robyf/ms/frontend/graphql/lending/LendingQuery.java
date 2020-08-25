@@ -7,12 +7,15 @@ import net.robyf.ms.frontend.client.CustomFeignClientException;
 import net.robyf.ms.frontend.client.LendingServiceClient;
 import net.robyf.ms.lending.api.Account;
 import net.robyf.ms.lending.api.CreditDecision;
+import net.robyf.ms.lending.api.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -43,6 +46,15 @@ public class LendingQuery implements GraphQLQueryResolver {
             return cd;
         } catch (CustomFeignClientException.NotFound nfe) {
             return null;
+        }
+    }
+
+    public List<Event> accountEvents(final UUID accountId) {
+        log.info("accountEvents for account id {}", accountId);
+        try {
+            return lendingService.getEvents(accountId);
+        } catch (CustomFeignClientException nfe) {
+            return Collections.emptyList();
         }
     }
 

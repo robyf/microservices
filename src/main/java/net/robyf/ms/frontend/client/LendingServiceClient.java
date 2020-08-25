@@ -3,6 +3,7 @@ package net.robyf.ms.frontend.client;
 import net.robyf.ms.lending.api.Account;
 import net.robyf.ms.lending.api.CreateCreditDecisionRequest;
 import net.robyf.ms.lending.api.CreditDecision;
+import net.robyf.ms.lending.api.Event;
 import net.robyf.ms.lending.api.MonetaryTransactionRequest;
 import net.robyf.ms.lending.api.MonetaryTransactionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
 import java.util.UUID;
 
 @FeignClient(name = "lending", url = "http://localhost:7004/lending-service")
@@ -42,5 +44,8 @@ public interface LendingServiceClient {
     @RequestMapping(method = RequestMethod.POST, value = "/v1/creditdecisions/{accountId}/{creditDecisionId}/accept/")
     CreditDecision acceptCreditDecision(@PathVariable("accountId") UUID accountId,
                                         @PathVariable("creditDecisionId") UUID creditDecisionId);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/v1/events/{accountId}/")
+    List<Event> getEvents(@PathVariable("accountId") UUID accountId);
 
 }

@@ -2,3 +2,5 @@ type Query {
 }
 type Mutation {
 }
+
+scalar Timestamp

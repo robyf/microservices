@@ -3,6 +3,8 @@ extend type Query {
     lendingAccount: LendingAccount
 
     validCreditDecision(accountId: ID!): CreditDecision
+
+    accountEvents(accountId: ID!): [Event!]!
 }
 
 extend type Mutation {
@@ -48,4 +50,12 @@ type CreditDecision {
 
 type MonetaryTransactionResponse {
     resultingBalance: Float!
+}
+
+type Event {
+    id: ID!
+    time: Timestamp!
+    type: Int!
+    amount: Float
+    resultingBalance: Float
 }
