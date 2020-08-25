@@ -9,6 +9,7 @@ import { Login as LoginView } from './views';
 import { Dashboard as DashboardView } from './views';
 import { Withdraw as WithdrawView } from './views';
 import { Deposit as DepositView } from './views';
+import { Events as EventsView } from './views';
 
 function NotFound() {
   return <h2>404</h2>;
@@ -39,6 +40,12 @@ const Routes = () => {
         component={DepositView}
         layout={MainLayout}
         path="/deposit"
+        authenticated
+      />
+      <RouteWithLayout
+        component={EventsView}
+        layout={MainLayout}
+        path="/events"
         authenticated
       />
       <RouteWithLayout

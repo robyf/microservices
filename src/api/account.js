@@ -1,4 +1,4 @@
-import { Account, CreditDecision } from '../types';
+import { Account, CreditDecision, Event } from '../types';
 
 const url = "/api/graphql";
 
@@ -142,6 +142,23 @@ const deposit = (accountId, amount) => {
   }));
 };
 
+const accountEvents = accountId => {
+  return fetchWithTimeout(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/graphql",
+    },
+    body: `{ accountEvents(accountId:"${accountId}") { id time type amount resultingBalance } }`,
+  }).then((response) => response.json()).then((response => {
+    console.log('Response', response);
+    if (response.data.accountEvents) {
+      return response.data.accountEvents.map(e => new Event(e));
+    } else {
+      return null;
+    }
+  }));
+};
+
 export {
   lendingAccount,
   createLendingAccount,
@@ -150,4 +167,5 @@ export {
   acceptCreditDecision,
   withdraw,
   deposit,
+  accountEvents,
 };

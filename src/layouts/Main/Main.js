@@ -7,6 +7,7 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import { User } from '../../types';
 import { logout } from '../../api/session';
@@ -40,7 +41,15 @@ const Main = props => {
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <LinkContainer to="/dashboard">
+              <Nav.Link>Dashboard</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/events">
+              <Nav.Link>Events</Nav.Link>
+            </LinkContainer>
+          </Nav>
           <Nav>
             <NavDropdown title={`${user.firstName} ${user.lastName}`} id="collapsible-nav-dropdown">
               <NavDropdown.Item onClick={() => doLogout()}>Log out</NavDropdown.Item>
