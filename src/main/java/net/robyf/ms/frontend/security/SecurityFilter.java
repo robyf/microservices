@@ -28,9 +28,15 @@ public class SecurityFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession(false);
         if (session != null) {
             UUID userId = (UUID) session.getAttribute(SessionKeys.USER_ID);
-            log.debug("Incoming request for user {}", userId);
+            UUID accountId = (UUID) session.getAttribute(SessionKeys.ACCOUNT_ID);
+            log.info("Incoming request for user {} account {}", userId, accountId);
 
-            Authentication auth = new UsernamePasswordAuthenticationToken(userId.toString(), null, null);
+            Principal principal = Principal.builder()
+                    .userId(userId)
+                    .accountId(accountId)
+                    .build();
+
+            Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

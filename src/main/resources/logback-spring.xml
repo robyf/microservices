@@ -6,5 +6,7 @@
         <logger name="org.hibernate.type" level="TRACE" />
     -->
     <logger name="net.robyf" level="INFO" />
+    <!--
     <logger name="net.robyf.ms.frontend.client" level="DEBUG" />
+    -->
 </configuration>

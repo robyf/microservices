@@ -2,7 +2,10 @@ package net.robyf.ms.frontend.session;
 
 import lombok.extern.slf4j.Slf4j;
 import net.robyf.ms.frontend.api.LoginRequest;
+import net.robyf.ms.frontend.client.CustomFeignClientException;
+import net.robyf.ms.frontend.client.LendingServiceClient;
 import net.robyf.ms.frontend.client.UserServiceClient;
+import net.robyf.ms.lending.api.Account;
 import net.robyf.ms.user.api.AuthenticateRequest;
 import net.robyf.ms.user.api.AuthenticateResponse;
 import net.robyf.ms.user.api.AuthenticateStatus;
@@ -24,6 +27,9 @@ public class AuthenticationService {
     private UserServiceClient userService;
 
     @Autowired
+    private LendingServiceClient lendingService;
+
+    @Autowired
     FindByIndexNameSessionRepository<? extends Session> sessions;
 
     public void login(final LoginRequest request, final HttpServletRequest httpRequest) {
@@ -32,6 +38,13 @@ public class AuthenticationService {
 
         if (authResponse.getStatus() == AuthenticateStatus.FAIL) {
             throw Problem.valueOf(Status.UNAUTHORIZED, "Authentication error");
+        }
+
+        Account account;
+        try {
+            account = lendingService.getByUser(authResponse.getUser().getId());
+        } catch (CustomFeignClientException.NotFound nfe) {
+            account = null;
         }
 
         HttpSession session = httpRequest.getSession(true);
@@ -45,6 +58,11 @@ public class AuthenticationService {
 
         session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, authResponse.getUser().getId().toString());
         session.setAttribute(SessionKeys.USER_ID, authResponse.getUser().getId());
+        if (account != null) {
+            session.setAttribute(SessionKeys.ACCOUNT_ID, account.getId());
+        }
+
+        log.info("Session created, id: {}, user_id: {}", session.getId(), session.getAttribute(SessionKeys.USER_ID));
     }
 
     public void logout(final HttpServletRequest httpRequest) {

@@ -1,17 +1,15 @@
 package net.robyf.ms.frontend.graphql.lending;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import net.robyf.ms.frontend.client.CustomFeignClientException;
 import net.robyf.ms.frontend.client.LendingServiceClient;
+import net.robyf.ms.frontend.security.Principal;
+import net.robyf.ms.frontend.security.PrincipalHelper;
 import net.robyf.ms.lending.api.Account;
 import net.robyf.ms.lending.api.CreditDecision;
 import net.robyf.ms.lending.api.Event;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -25,12 +23,14 @@ public class LendingQuery implements GraphQLQueryResolver {
     @Autowired
     private LendingServiceClient lendingService;
 
+    @Autowired
+    private PrincipalHelper principalHelper;
+
     public Account lendingAccount() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof UsernamePasswordAuthenticationToken) {
-            UUID userId = UUID.fromString(((UsernamePasswordAuthenticationToken) auth).getName());
+        Principal principal = principalHelper.getPrincipal();
+        if (principal != null) {
             try {
-                Account account = lendingService.getByUser(userId);
+                Account account = lendingService.getByUser(principal.getUserId());
                 return account;
             } catch (CustomFeignClientException.NotFound nfe) {
                 return null;
