@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 
 class Account {
-  constructor(json) {
+  constructor(json, balance) {
     this.id = json.id;
     this.status = json.status;
-    this.balance = json.balance;
+    this.balance = balance ? balance : json.balance;
   }
 }
 

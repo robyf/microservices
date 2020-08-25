@@ -9,11 +9,11 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
-import { Account } from '../../types';
-import { withdraw } from '../../api/account';
+import { Account, CreditDecision } from '../../types';
+import { deposit } from '../../api/account';
 import { setAccountBalance } from '../../redux/actions';
 
-const Withdraw = ({ account, setAccountBalance, history }) => {
+const Deposit = ({ account, creditDecision, setAccountBalance, history }) => {
 
   const [amount, setAmount] = React.useState('');
   const [disabled, setDisabled] = React.useState(true);
@@ -23,14 +23,14 @@ const Withdraw = ({ account, setAccountBalance, history }) => {
     setAmount(value);
 
     const n = parseFloat(value);
-    setDisabled(isNaN(n) || !isFinite(n) || n <= 0 || n > account.balance);
+    setDisabled(isNaN(n) || !isFinite(n) || n <= 0 || n > (creditDecision.amount - account.balance));
   };
 
   const buttonClicked = async () => {
     console.log('Button clicked');
     setLoading(true);
 
-    const balance = await withdraw(account.id, parseFloat(amount));
+    const balance = await deposit(account.id, parseFloat(amount));
     console.log('Resulting balance', balance);
     setAccountBalance(balance);
 
@@ -42,7 +42,7 @@ const Withdraw = ({ account, setAccountBalance, history }) => {
     <>
       <Row className="scoring-header">
         <Col className="text-center">
-          Withdraw money to own bank account
+          Pay back to your lending account
         </Col>
       </Row>
       <Row>
@@ -52,10 +52,10 @@ const Withdraw = ({ account, setAccountBalance, history }) => {
               <Form>
                 <Row>
                   <Col sm={4} className="text-right">
-                    Available balance:
+                    Amount to be repaid:
                   </Col>
                   <Col sm={8}>
-                    {account.balance}
+                    {creditDecision.amount - account.balance}
                   </Col>
                 </Row>
                 <Form.Group as={Row} controlId="formIncome">
@@ -63,13 +63,13 @@ const Withdraw = ({ account, setAccountBalance, history }) => {
                     Amount:
                   </Form.Label>
                   <Col sm={8}>
-                    <Form.Control type="number" min="0" max={account.balance} step="100" placeholder="Amount" value={amount} onChange={event => amountChange(event.target.value)} />
+                    <Form.Control type="number" min="0" max={creditDecision.amount - account.balance} step="100" placeholder="Amount" value={amount} onChange={event => amountChange(event.target.value)} />
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
                   <Col sm={{ span: 8, offset: 4 }}>
                     <Button variant="primary" disabled={disabled || loading} onClick={() => buttonClicked()}>
-                      {loading ? 'Withdrawing...' : 'Continue'}
+                      {loading ? 'Paying back...' : 'Continue'}
                     </Button>
                   </Col>
                 </Form.Group>
@@ -83,8 +83,9 @@ const Withdraw = ({ account, setAccountBalance, history }) => {
   );
 };
 
-Withdraw.propTypes = {
+Deposit.propTypes = {
   account: Account.propTypes,
+  creditDecision: CreditDecision.propTypes,
   setAccountBalance: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
@@ -94,7 +95,8 @@ Withdraw.propTypes = {
 const mapStateToProps = state => {
   return {
     account: state.session.account,
+    creditDecision: state.session.creditDecision,
   };
 };
 
-export default connect(mapStateToProps, { setAccountBalance })(withRouter(Withdraw));
+export default connect(mapStateToProps, { setAccountBalance })(withRouter(Deposit));

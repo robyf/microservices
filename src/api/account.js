@@ -108,4 +108,46 @@ const acceptCreditDecision = (accountId, creditDecisionId) => {
   }));
 };
 
-export { lendingAccount, createLendingAccount, validCreditDecision, createCreditDecision, acceptCreditDecision };
+const withdraw = (accountId, amount) => {
+  return fetchWithTimeout(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/graphql",
+    },
+    body: `mutation { withdraw(accountId:"${accountId}", amount:${amount}) { resultingBalance } }`,
+  }).then((response) => response.json()).then((response => {
+    console.log('Response', response);
+    if (response.data.withdraw) {
+      return response.data.withdraw.resultingBalance;
+    } else {
+      return null;
+    }
+  }));
+};
+
+const deposit = (accountId, amount) => {
+  return fetchWithTimeout(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/graphql",
+    },
+    body: `mutation { deposit(accountId:"${accountId}", amount:${amount}) { resultingBalance } }`,
+  }).then((response) => response.json()).then((response => {
+    console.log('Response', response);
+    if (response.data.deposit) {
+      return response.data.deposit.resultingBalance;
+    } else {
+      return null;
+    }
+  }));
+};
+
+export {
+  lendingAccount,
+  createLendingAccount,
+  validCreditDecision,
+  createCreditDecision,
+  acceptCreditDecision,
+  withdraw,
+  deposit,
+};

@@ -1,4 +1,4 @@
-import { LOGOUT, SET_USER, SET_ACCOUNT, SET_CREDIT_DECISION } from './actionTypes';
+import { LOGOUT, SET_USER, SET_ACCOUNT, SET_CREDIT_DECISION, SET_ACCOUNT_BALANCE } from './actionTypes';
 
 export const logout = () => ({
   type: LOGOUT,
@@ -17,4 +17,9 @@ export const setAccount = account => ({
 export const setCreditDecision = cd => ({
   type: SET_CREDIT_DECISION,
   payload: cd,
+});
+
+export const setAccountBalance = balance => ({
+  type: SET_ACCOUNT_BALANCE,
+  payload: balance,
 });

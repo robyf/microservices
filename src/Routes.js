@@ -8,10 +8,7 @@ import { Minimal as MinimalLayout } from './layouts';
 import { Login as LoginView } from './views';
 import { Dashboard as DashboardView } from './views';
 import { Withdraw as WithdrawView } from './views';
-
-function Deposit() {
-  return <h2>Deposit page</h2>;
-}
+import { Deposit as DepositView } from './views';
 
 function NotFound() {
   return <h2>404</h2>;
@@ -39,7 +36,7 @@ const Routes = () => {
         authenticated
       />
       <RouteWithLayout
-        component={Deposit}
+        component={DepositView}
         layout={MainLayout}
         path="/deposit"
         authenticated

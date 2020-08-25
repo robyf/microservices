@@ -1,4 +1,6 @@
-import { LOGOUT, SET_USER, SET_ACCOUNT, SET_CREDIT_DECISION } from '../actionTypes';
+import { LOGOUT, SET_USER, SET_ACCOUNT, SET_CREDIT_DECISION, SET_ACCOUNT_BALANCE } from '../actionTypes';
+
+import { Account } from '../../types';
 
 const initialState = {
   user: undefined,
@@ -19,6 +21,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         account: action.payload,
+      };
+    case SET_ACCOUNT_BALANCE:
+      return {
+        ...state,
+        account: new Account(state.account, action.payload),
       };
     case SET_CREDIT_DECISION:
       return {
