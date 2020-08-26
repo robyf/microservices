@@ -34,7 +34,7 @@ public class FeignConfig {
                         .withAudience("user")
                         .withSubject(principal.getUserId().toString())
                         .withClaim("user_id", principal.getUserId().toString())
-                        .withClaim("account_id", principal.getAccountId().toString())
+                        .withClaim("account_id", principal.getAccountId() == null ? null : principal.getAccountId().toString())
                         .withExpiresAt(Date.from(expire))
                         .sign(this.algorithm);
                 requestTemplate.header("Authorization", "Bearer " + token);
