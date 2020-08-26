@@ -2,19 +2,19 @@ extend type Query {
     # Lending account for current user
     lendingAccount: LendingAccount
 
-    validCreditDecision(accountId: ID!): CreditDecision
+    validCreditDecision: CreditDecision
 
-    accountEvents(accountId: ID!): [Event!]!
+    accountEvents: [Event!]!
 }
 
 extend type Mutation {
     createLendingAccount: LendingAccount
 
-    createCreditDecision(accountId: ID!, income: Float!): CreditDecision
-    acceptCreditDecision(accountId: ID!, creditDecisionId: ID!): CreditDecision
+    createCreditDecision(income: Float!): CreditDecision
+    acceptCreditDecision(creditDecisionId: ID!): CreditDecision
 
-    withdraw(accountId: ID!, amount: Float!): MonetaryTransactionResponse
-    deposit(accountId: ID!, amount: Float!): MonetaryTransactionResponse
+    withdraw(amount: Float!): MonetaryTransactionResponse
+    deposit(amount: Float!): MonetaryTransactionResponse
 }
 
 enum LendingAccountStatus {

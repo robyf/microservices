@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -55,36 +57,44 @@ public class LendingMutation implements GraphQLMutationResolver {
         return null;
     }
 
-    public CreditDecision createCreditDecision(final UUID accountId, final BigDecimal income) {
+    public CreditDecision createCreditDecision(final BigDecimal income) {
         log.info("Call to create credit decision");
 
-        CreateCreditDecisionRequest request = CreateCreditDecisionRequest.builder().income(income).build();
-        try {
-            return lendingService.createCreditDecision(accountId, request);
-        } catch(CustomFeignClientException fce) {
-            log.error("Error creating credit decision", fce);
-            throw new ClientException(fce);
+        Principal principal = principalHelper.getPrincipal();
+        if (principal != null) {
+            CreateCreditDecisionRequest request = CreateCreditDecisionRequest.builder().income(income).build();
+            try {
+                return lendingService.createCreditDecision(principal.getAccountId(), request);
+            } catch (CustomFeignClientException fce) {
+                log.error("Error creating credit decision", fce);
+                throw new ClientException(fce);
+            }
         }
+        throw Problem.valueOf(Status.FORBIDDEN);
     }
 
-    public CreditDecision acceptCreditDecision(final UUID accountId, final UUID creditDecisionId) {
+    public CreditDecision acceptCreditDecision(final UUID creditDecisionId) {
         log.info("Call to accept credit decision");
 
-        try {
-            return lendingService.acceptCreditDecision(accountId, creditDecisionId);
-        } catch(CustomFeignClientException fce) {
-            log.error("Error accepting credit decision", fce);
-            throw new ClientException(fce);
+        Principal principal = principalHelper.getPrincipal();
+        if (principal != null) {
+            try {
+                return lendingService.acceptCreditDecision(principal.getAccountId(), creditDecisionId);
+            } catch (CustomFeignClientException fce) {
+                log.error("Error accepting credit decision", fce);
+                throw new ClientException(fce);
+            }
         }
+        throw Problem.valueOf(Status.FORBIDDEN);
     }
 
-    public MonetaryTransactionResponse withdraw(final UUID accountId, final BigDecimal amount) {
+    public MonetaryTransactionResponse withdraw(final BigDecimal amount) {
         log.info("Call to create withdraw");
         Principal principal = principalHelper.getPrincipal();
         if (principal != null) {
             try {
                 MonetaryTransactionRequest request = MonetaryTransactionRequest.builder().amount(amount).build();
-                return lendingService.withdraw(principal.getUserId(), accountId, request);
+                return lendingService.withdraw(principal.getUserId(), principal.getAccountId(), request);
             } catch(CustomFeignClientException fce) {
                 log.error("Error making a withdraw", fce);
                 throw new ClientException(fce);
@@ -93,13 +103,13 @@ public class LendingMutation implements GraphQLMutationResolver {
         return null;
     }
 
-    public MonetaryTransactionResponse deposit(final UUID accountId, final BigDecimal amount) {
+    public MonetaryTransactionResponse deposit(final BigDecimal amount) {
         log.info("Call to create deposit");
         Principal principal = principalHelper.getPrincipal();
         if (principal != null) {
             try {
                 MonetaryTransactionRequest request = MonetaryTransactionRequest.builder().amount(amount).build();
-                return lendingService.deposit(principal.getUserId(), accountId, request);
+                return lendingService.deposit(principal.getUserId(), principal.getAccountId(), request);
             } catch(CustomFeignClientException fce) {
                 log.error("Error making a deposit", fce);
                 throw new ClientException(fce);

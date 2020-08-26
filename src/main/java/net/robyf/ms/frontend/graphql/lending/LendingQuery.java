@@ -39,23 +39,31 @@ public class LendingQuery implements GraphQLQueryResolver {
         return null;
     }
 
-    public CreditDecision validCreditDecision(final UUID accountId) {
-        log.info("validCreditDecision for account id {}", accountId);
-        try {
-            CreditDecision cd = lendingService.getValidCreditDecision(accountId);
-            return cd;
-        } catch (CustomFeignClientException.NotFound nfe) {
-            return null;
+    public CreditDecision validCreditDecision() {
+        Principal principal = principalHelper.getPrincipal();
+        if (principal != null) {
+            log.info("validCreditDecision for account id {}", principal.getAccountId());
+            try {
+                CreditDecision cd = lendingService.getValidCreditDecision(principal.getAccountId());
+                return cd;
+            } catch (CustomFeignClientException.NotFound nfe) {
+                return null;
+            }
         }
+        return null;
     }
 
-    public List<Event> accountEvents(final UUID accountId) {
-        log.info("accountEvents for account id {}", accountId);
-        try {
-            return lendingService.getEvents(accountId);
-        } catch (CustomFeignClientException nfe) {
-            return Collections.emptyList();
+    public List<Event> accountEvents() {
+        Principal principal = principalHelper.getPrincipal();
+        if (principal != null) {
+            log.info("accountEvents for account id {}", principal.getAccountId());
+            try {
+                return lendingService.getEvents(principal.getAccountId());
+            } catch (CustomFeignClientException nfe) {
+                return Collections.emptyList();
+            }
         }
+        return Collections.emptyList();
     }
 
 }
