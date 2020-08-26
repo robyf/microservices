@@ -27,7 +27,7 @@ const App = ({ setUser, setAccount, setCreditDecision }) => {
         const account = await lendingAccount();
         if (account) {
           setAccount(account);
-          const cd = await validCreditDecision(account.id);
+          const cd = await validCreditDecision();
           setCreditDecision(cd);
         }
       }

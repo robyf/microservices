@@ -19,7 +19,7 @@ const PendingCreditDecision = ({ account, creditDecision, setAccount, setCreditD
     console.log('Accept');
     setLoading(true);
 
-    const cd = await acceptCreditDecision(account.id, creditDecision.id);
+    const cd = await acceptCreditDecision(creditDecision.id);
     const acc = await lendingAccount();
 
     setCreditDecision(cd);

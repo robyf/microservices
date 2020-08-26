@@ -30,7 +30,7 @@ const Deposit = ({ account, creditDecision, setAccountBalance, history }) => {
     console.log('Button clicked');
     setLoading(true);
 
-    const balance = await deposit(account.id, parseFloat(amount));
+    const balance = await deposit(parseFloat(amount));
     console.log('Resulting balance', balance);
     setAccountBalance(balance);
 

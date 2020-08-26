@@ -30,7 +30,7 @@ const Withdraw = ({ account, setAccountBalance, history }) => {
     console.log('Button clicked');
     setLoading(true);
 
-    const balance = await withdraw(account.id, parseFloat(amount));
+    const balance = await withdraw(parseFloat(amount));
     console.log('Resulting balance', balance);
     setAccountBalance(balance);
 

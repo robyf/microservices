@@ -29,7 +29,7 @@ const Scoring = ({ account, setCreditDecision }) => {
     console.log('Button clicked');
     setLoading(true);
 
-    const cd = await createCreditDecision(account.id, parseFloat(income));
+    const cd = await createCreditDecision(parseFloat(income));
     console.log('Credit decision', cd);
     setCreditDecision(cd);
   }

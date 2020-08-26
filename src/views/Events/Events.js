@@ -18,7 +18,7 @@ const Events = ({ account }) => {
     const fetchData = async () => {
       setLoading(true);
       if (account) {
-        const evts = await accountEvents(account.id);
+        const evts = await accountEvents();
         console.log("Events", evts);
         setEvents(evts);
         setLoading(false);

@@ -27,20 +27,16 @@ const Dashboard = ({ account, creditDecision, setAccount, setCreditDecision }) =
       setNegative(false);
       setPending(false);
 
-      let currentAccount;
-      if (account) {
-        currentAccount = account;
-      } else {
+      if (!account) {
         let acc = await lendingAccount();
         if (!acc) {
           acc = await createLendingAccount();
         }
-        currentAccount = acc;
         setAccount(acc);
       }
 
       if (!creditDecision) {
-        const cd = await validCreditDecision(currentAccount.id);
+        const cd = await validCreditDecision();
         setCreditDecision(cd);
       }
 
