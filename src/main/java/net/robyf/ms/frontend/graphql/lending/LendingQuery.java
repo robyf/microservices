@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @Slf4j
@@ -54,16 +53,13 @@ public class LendingQuery implements GraphQLQueryResolver {
     }
 
     public List<Event> accountEvents() {
-        Principal principal = principalHelper.getPrincipal();
-        if (principal != null) {
-            log.info("accountEvents for account id {}", principal.getAccountId());
-            try {
-                return lendingService.getEvents(principal.getAccountId());
-            } catch (CustomFeignClientException nfe) {
-                return Collections.emptyList();
-            }
+        Principal principal = principalHelper.ensurePrincipal();
+        log.info("accountEvents for account id {}", principal.getAccountId());
+        try {
+            return lendingService.getEvents(principal.getAccountId());
+        } catch (CustomFeignClientException nfe) {
+            return Collections.emptyList();
         }
-        return Collections.emptyList();
     }
 
 }

@@ -5,6 +5,7 @@ import graphql.ErrorType;
 import graphql.GraphQLError;
 import graphql.language.SourceLocation;
 import net.robyf.ms.frontend.client.CustomFeignClientException;
+import org.zalando.problem.DefaultProblem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +16,22 @@ public class ClientException extends RuntimeException implements GraphQLError {
     private final int statusCode;
     private final String title;
     private final String detail;
+    private final String type;
 
     public ClientException(final CustomFeignClientException fce) {
         super(fce.getMessage());
         this.statusCode = fce.getStatusCode();
         this.title = fce.getTitle();
         this.detail = fce.getDetail();
+        this.type = "feign";
+    }
+
+    public ClientException(final DefaultProblem problem) {
+        super(problem.getMessage());
+        this.statusCode = problem.getStatus().getStatusCode();
+        this.title = problem.getTitle();
+        this.detail = problem.getDetail();
+        this.type = "problem";
     }
 
     @Override
@@ -36,6 +47,7 @@ public class ClientException extends RuntimeException implements GraphQLError {
     @Override
     public Map<String, Object> getExtensions() {
         Map<String, Object> ext = new HashMap<>();
+        ext.put("type", this.type);
         ext.put("statusCode", this.statusCode);
         ext.put("title", this.title);
         ext.put("detail", this.detail);

@@ -38,6 +38,8 @@ public class SecurityFilter implements Filter {
 
             Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
             SecurityContextHolder.getContext().setAuthentication(auth);
+        } else {
+            log.info("Incoming request without principal");
         }
 
         chain.doFilter(request, response);
