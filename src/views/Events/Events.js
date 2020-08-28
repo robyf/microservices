@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,8 +10,10 @@ import Table from 'react-bootstrap/Table';
 
 import { Account } from '../../types';
 import { accountEvents } from '../../api/account';
+import { UnauthorizedError } from '../../api/common';
+import { logout as logoutAction } from '../../redux/actions';
 
-const Events = ({ account }) => {
+const Events = ({ account, logoutAction, history }) => {
 
   const [loading, setLoading] = React.useState(true);
   const [events, setEvents] = React.useState([]);
@@ -18,10 +22,22 @@ const Events = ({ account }) => {
     const fetchData = async () => {
       setLoading(true);
       if (account) {
-        const evts = await accountEvents();
-        console.log("Events", evts);
-        setEvents(evts);
-        setLoading(false);
+        try {
+          const evts = await accountEvents();
+          console.log("Events", evts);
+          setEvents(evts);
+          setLoading(false);
+        } catch (err) {
+          if (err instanceof UnauthorizedError) {
+            console.error("Unauthorized, should redirect to login page");
+            logoutAction();
+
+            const { push } = history;
+            push('/login');
+          } else {
+            console.error("Received error", err);
+          }
+        }
       }
     };
     fetchData();
@@ -81,6 +97,10 @@ const Events = ({ account }) => {
 
 Events.propTypes = {
   account: Account.propTypes,
+  logoutAction: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = state => {
@@ -89,4 +109,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Events);
+export default connect(mapStateToProps, { logoutAction })(withRouter(Events));

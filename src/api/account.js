@@ -1,30 +1,8 @@
 import { Account, CreditDecision, Event } from '../types';
 
+import { fetchWithTimeout, fetchWithTimeoutAndErrorHandling } from './common';
+
 const url = "/api/graphql";
-
-const fetchWithTimeout = (requestUrl, params) => {
-  return new Promise((resolve, reject) => {
-    let didTimeout = false;
-    const timeout = setTimeout(() => {
-      didTimeout = true;
-      reject(new Error("Request timed out"));
-    }, 5000);
-
-    fetch(requestUrl, params)
-      .then((response) => {
-        clearTimeout(timeout);
-        if (!didTimeout) {
-          resolve(response);
-        }
-      })
-      .catch((error) => {
-        if (didTimeout) {
-          return;
-        }
-        reject(error);
-      });
-  });
-};
 
 const lendingAccount = () => {
   return fetchWithTimeout(url, {
@@ -143,13 +121,13 @@ const deposit = amount => {
 };
 
 const accountEvents = () => {
-  return fetchWithTimeout(url, {
+  return fetchWithTimeoutAndErrorHandling(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/graphql",
     },
     body: `{ accountEvents { id time type amount resultingBalance } }`,
-  }).then((response) => response.json()).then((response => {
+  }).then((response => {
     console.log('Response', response);
     if (response.data?.accountEvents) {
       return response.data.accountEvents.map(e => new Event(e));
