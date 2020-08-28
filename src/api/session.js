@@ -1,28 +1,6 @@
-const url = '/api/v1/authentication'
+import { fetchWithTimeout } from './common';
 
-const fetchWithTimeout = (requestUrl, params) => {
-  return new Promise((resolve, reject) => {
-    let didTimeout = false;
-    const timeout = setTimeout(() => {
-      didTimeout = true;
-      reject(new Error('Request timed out'));
-    }, 5000);
-
-    fetch(requestUrl, params)
-      .then(response => {
-        clearTimeout(timeout);
-        if (!didTimeout) {
-          resolve(response);
-        }
-      })
-      .catch(error => {
-        if (didTimeout) {
-          return;
-        }
-        reject(error);
-      });
-  });
-};
+const url = '/api/v1/authentication';
 
 const login = (username, password) => {
   return fetchWithTimeout(`${url}/login`, {

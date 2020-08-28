@@ -5,13 +5,13 @@ import { fetchWithTimeout, fetchWithTimeoutAndErrorHandling } from './common';
 const url = "/api/graphql";
 
 const lendingAccount = () => {
-  return fetchWithTimeout(url, {
+  return fetchWithTimeoutAndErrorHandling(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/graphql",
     },
     body: `{ lendingAccount { id status balance } }`,
-  }).then((response) => response.json()).then((response => {
+  }).then((response => {
     if (response.data.lendingAccount) {
       return new Account(response.data.lendingAccount);
     } else {
@@ -37,13 +37,13 @@ const createLendingAccount = () => {
 };
 
 const validCreditDecision = () => {
-  return fetchWithTimeout(url, {
+  return fetchWithTimeoutAndErrorHandling(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/graphql",
     },
     body: `{ validCreditDecision { id status positive amount } }`,
-  }).then((response) => response.json()).then((response => {
+  }).then((response => {
     if (response.data.validCreditDecision) {
       return new CreditDecision(response.data.validCreditDecision);
     } else {
@@ -53,13 +53,13 @@ const validCreditDecision = () => {
 };
 
 const createCreditDecision = income => {
-  return fetchWithTimeout(url, {
+  return fetchWithTimeoutAndErrorHandling(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/graphql",
     },
     body: `mutation { createCreditDecision(income:${income}) { id status positive amount } }`,
-  }).then((response) => response.json()).then((response => {
+  }).then((response => {
     console.log('Response', response);
     if (response.data.createCreditDecision) {
       return new CreditDecision(response.data.createCreditDecision);
@@ -70,13 +70,13 @@ const createCreditDecision = income => {
 };
 
 const acceptCreditDecision = creditDecisionId => {
-  return fetchWithTimeout(url, {
+  return fetchWithTimeoutAndErrorHandling(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/graphql",
     },
     body: `mutation { acceptCreditDecision(creditDecisionId:"${creditDecisionId}") { id status positive amount } }`,
-  }).then((response) => response.json()).then((response => {
+  }).then((response => {
     console.log('Response', response);
     if (response.data.acceptCreditDecision) {
       return new CreditDecision(response.data.acceptCreditDecision);
@@ -87,13 +87,13 @@ const acceptCreditDecision = creditDecisionId => {
 };
 
 const withdraw = amount => {
-  return fetchWithTimeout(url, {
+  return fetchWithTimeoutAndErrorHandling(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/graphql",
     },
     body: `mutation { withdraw(amount:${amount}) { resultingBalance } }`,
-  }).then((response) => response.json()).then((response => {
+  }).then((response => {
     console.log('Response', response);
     if (response.data.withdraw) {
       return response.data.withdraw.resultingBalance;
@@ -104,13 +104,13 @@ const withdraw = amount => {
 };
 
 const deposit = amount => {
-  return fetchWithTimeout(url, {
+  return fetchWithTimeoutAndErrorHandling(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/graphql",
     },
     body: `mutation { deposit(amount:${amount}) { resultingBalance } }`,
-  }).then((response) => response.json()).then((response => {
+  }).then((response => {
     console.log('Response', response);
     if (response.data.deposit) {
       return response.data.deposit.resultingBalance;
