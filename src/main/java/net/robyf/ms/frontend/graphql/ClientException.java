@@ -17,6 +17,7 @@ public class ClientException extends RuntimeException implements GraphQLError {
     private final String title;
     private final String detail;
     private final String type;
+    private final ErrorType errorType;
 
     public ClientException(final CustomFeignClientException fce) {
         super(fce.getMessage());
@@ -24,6 +25,7 @@ public class ClientException extends RuntimeException implements GraphQLError {
         this.title = fce.getTitle();
         this.detail = fce.getDetail();
         this.type = "feign";
+        this.errorType = ErrorType.DataFetchingException;
     }
 
     public ClientException(final DefaultProblem problem) {
@@ -32,6 +34,7 @@ public class ClientException extends RuntimeException implements GraphQLError {
         this.title = problem.getTitle();
         this.detail = problem.getDetail();
         this.type = "problem";
+        this.errorType = ErrorType.ValidationError;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class ClientException extends RuntimeException implements GraphQLError {
 
     @Override
     public ErrorType getErrorType() {
-        return ErrorType.ValidationError;
+        return this.errorType;
     }
 
     @Override
