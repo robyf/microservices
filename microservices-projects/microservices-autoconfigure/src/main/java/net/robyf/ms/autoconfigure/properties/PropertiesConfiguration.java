@@ -3,6 +3,8 @@ package net.robyf.ms.autoconfigure.properties;
 import lombok.extern.slf4j.Slf4j;
 import net.robyf.ms.autoconfigure.AutoconfigurationException;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.StandardEnvironment;
 
 @Slf4j
 public class PropertiesConfiguration {
@@ -54,16 +56,24 @@ public class PropertiesConfiguration {
             return Profile.CI;
         }
 
-        if (isProd) {
-            return Profile.PROD;
-        }
+        return Profile.PROD;
+    }
 
-        return null;
+    private void assertPropertyPresent(final String propertyName) {
+        if (this.context.getProperty(propertyName) == null) {
+            throw new AutoconfigurationException("Property '" + propertyName + "' missing from bootstrap context. Please define it in bootstrap.yml");
+        }
     }
 
     public void configure() {
         Profile profile = resolveProfile();
         log.info("Performing autoconfiguration for profile {}", profile);
+
+        assertPropertyPresent("spring.application.name");
+        assertPropertyPresent("spring.application.version");
+
+        this.context.getPropertySources().addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
+                new MapPropertySource("autoconfigured", profile.getPropertiesProvider().getProperties(this.context)));
     }
 
 }

@@ -40,7 +40,7 @@ public class SecurityFilter implements Filter {
                 DecodedJWT jwt = verifier.verify(jwtString);
                 String userIdStr = jwt.getClaim("user_id").asString();
                 String accountIdStr = jwt.getClaim("account_id").asString();
-                log.info("Incoming request for user {} account {}", userIdStr, accountIdStr);
+                log.debug("Incoming request for user {} account {}", userIdStr, accountIdStr);
 
                 Principal principal = Principal.builder()
                         .jwt(jwtString)

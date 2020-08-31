@@ -1,5 +1,6 @@
 package net.robyf.ms.autoconfigure.properties;
 
+import net.robyf.ms.autoconfigure.AutoconfigurationException;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -79,6 +80,20 @@ public class PropertiesConfigurationTest {
         Mockito.when(context.getActiveProfiles()).thenReturn(new String[]{"prod-foo"});
 
         assertThat(config.resolveProfile()).isEqualTo(Profile.PROD);
+    }
+
+    @Test(expected = AutoconfigurationException.class)
+    public void testNoValidProfilePresent() {
+        Mockito.when(context.getActiveProfiles()).thenReturn(new String[]{});
+
+        config.resolveProfile();
+    }
+
+    @Test(expected = AutoconfigurationException.class)
+    public void testMultipleProfilesPresent() {
+        Mockito.when(context.getActiveProfiles()).thenReturn(new String[]{"local", "dev"});
+
+        config.resolveProfile();
     }
 
 }
