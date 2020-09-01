@@ -17,6 +17,7 @@ dependencyManagement {
         dependency group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version: '5.0.2'
         dependency group: 'com.graphql-java', name: 'graphql-java-tools', version: '5.2.4'
         dependency group: 'com.graphql-java', name: 'graphiql-spring-boot-starter', version: '5.0.2'
+        dependency group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
 
         dependencySet(group: 'net.robyf.ms', version: "${version}") {
             entry 'microservices-autoconfigure'
