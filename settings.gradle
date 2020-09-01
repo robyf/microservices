@@ -10,3 +10,4 @@
 rootProject.name = 'microservices'
 
 include "microservices-projects:microservices-autoconfigure"
+include "microservices-projects:microservices-dependencies"

@@ -1,0 +1,33 @@
+plugins {
+    id "java-library"
+}
+
+description = "Microservices Dependency Management"
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.session:spring-session-bom:Corn-SR2'
+    }
+    dependencies {
+        dependency group: 'org.zalando', name: 'problem-spring-web', version: '0.25.2'
+        dependency group: 'com.auth0', name: 'java-jwt', version: '3.10.3'
+        dependency group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+        dependency group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+        dependency group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
+        dependency group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version: '5.0.2'
+        dependency group: 'com.graphql-java', name: 'graphql-java-tools', version: '5.2.4'
+        dependency group: 'com.graphql-java', name: 'graphiql-spring-boot-starter', version: '5.0.2'
+
+        dependencySet(group: 'net.robyf.ms', version: "${version}") {
+            entry 'microservices-autoconfigure'
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
