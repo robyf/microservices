@@ -38,7 +38,3 @@ server:
 management:
   server:
     port: 7005
-
-logging:
-  level:
-    net.robyf.ms: DEBUG
