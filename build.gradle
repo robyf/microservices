@@ -38,13 +38,13 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    implementation group: 'net.robyf.ms', name: 'microservices-spring-boot-starter'
     implementation group: 'com.h2database', name: 'h2'
     implementation group: 'org.zalando', name: 'problem-spring-web'
     implementation group: 'io.springfox', name: 'springfox-boot-starter'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui'
     implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api'
     implementation group: 'com.auth0', name: 'java-jwt'
-    implementation group: 'net.robyf.ms', name: 'microservices-autoconfigure'
 
     implementation group: 'net.robyf.ms', name: 'scoring-service-api', version: '1.0-SNAPSHOT'
 
