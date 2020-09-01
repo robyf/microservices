@@ -1,0 +1,18 @@
+plugins {
+    id "java-library"
+}
+
+description = "Microservices Spring Boot Starter"
+
+dependencies {
+    api(project(":microservices-projects:microservices-autoconfigure"))
+    api group: 'org.springframework.boot', name: 'spring-boot-starter'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}

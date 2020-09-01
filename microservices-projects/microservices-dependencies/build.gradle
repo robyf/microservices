@@ -20,6 +20,7 @@ dependencyManagement {
 
         dependencySet(group: 'net.robyf.ms', version: "${version}") {
             entry 'microservices-autoconfigure'
+            entry 'microservices-spring-boot-starter'
         }
     }
 }
