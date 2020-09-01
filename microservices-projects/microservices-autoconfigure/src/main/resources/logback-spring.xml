@@ -5,5 +5,9 @@
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
     </root>
-    <logger name="org.springframework.web" level="ERROR"/>
+    <logger name="org.springframework.web" level="ERROR" />
+
+    <springProfile name="local">
+        <logger name="net.robyf.ms" level="DEBUG" />
+    </springProfile>
 </configuration>
