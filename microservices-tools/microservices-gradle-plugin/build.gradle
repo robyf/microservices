@@ -1,0 +1,26 @@
+plugins {
+    id 'java-gradle-plugin'
+}
+
+description = 'Microservices Gradle Plugin'
+
+processResources {
+    expand(project.properties)
+}
+
+dependencies {
+    api group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: "${springBootVersion}"
+    api group: 'io.spring.gradle', name: 'dependency-management-plugin', version: '1.0.10.RELEASE'
+
+    testImplementation group: 'junit', name: 'junit'
+    testImplementation group: 'org.assertj', name: 'assertj-core'
+}
+
+gradlePlugin {
+    plugins {
+        microservicesPlugin {
+            id = 'net.robyf.ms.gradle'
+            implementationClass = 'net.robyf.ms.gradle.plugin.MicroservicesPlugin'
+        }
+    }
+}

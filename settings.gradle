@@ -12,3 +12,5 @@ rootProject.name = 'microservices'
 include "microservices-projects:microservices-autoconfigure"
 include "microservices-projects:microservices-dependencies"
 include "microservices-projects:microservices-spring-boot-starter"
+
+include "microservices-tools:microservices-gradle-plugin"
