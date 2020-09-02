@@ -1,5 +1,7 @@
 plugins {
+    id 'java'
     id 'java-gradle-plugin'
+    id 'jacoco'
 }
 
 description = 'Microservices Gradle Plugin'
@@ -24,3 +26,11 @@ gradlePlugin {
         }
     }
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+test.finalizedBy(project.tasks.jacocoTestReport)
