@@ -1,7 +1,6 @@
 package net.robyf.ms.lending;
 
 import lombok.extern.slf4j.Slf4j;
-import net.robyf.ms.lending.api.Account;
 import net.robyf.ms.lending.api.CreateCreditDecisionRequest;
 import net.robyf.ms.lending.api.CreditDecision;
 import org.springframework.beans.factory.annotation.Autowired;
