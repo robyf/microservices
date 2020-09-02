@@ -45,7 +45,7 @@ public class CreditDecisionService {
     private ScoringServiceClient scoringService;
 
     public List<CreditDecision> getByAccountId(final UUID accountId) {
-        return repository.findByAccountId(accountId).stream().map(cd -> cd.asCreditDecision()).collect(Collectors.toList());
+        return repository.findByAccountId(accountId).stream().map(PersistenceCreditDecision::asCreditDecision).collect(Collectors.toList());
     }
 
     public CreditDecision getValidByAccountId(final UUID accountId) {

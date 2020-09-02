@@ -45,8 +45,8 @@ public class PersistenceCreditDecision {
     @Column (name = "amount", precision = 10, scale = 2, nullable = false)
     private BigDecimal amount;
 
-    @Tolerate
-    public PersistenceCreditDecision() {
+    @Tolerate // NOSONAR
+    public PersistenceCreditDecision() { // NOSONAR
     }
 
     public CreditDecision asCreditDecision() {

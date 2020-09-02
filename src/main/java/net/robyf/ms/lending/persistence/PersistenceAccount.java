@@ -36,8 +36,8 @@ public class PersistenceAccount {
     @Column (name = "balance", precision = 10, scale = 2, nullable = false)
     private BigDecimal balance;
 
-    @Tolerate
-    public PersistenceAccount() {
+    @Tolerate // NOSONAR
+    public PersistenceAccount() { // NOSONAR
     }
 
     public Account asAccount() {

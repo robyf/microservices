@@ -42,8 +42,8 @@ public class PersistenceEvent {
     @Column (name = "resulting_balance", precision = 10, scale = 2, nullable = true)
     private BigDecimal resultingBalance;
 
-    @Tolerate
-    public PersistenceEvent() {
+    @Tolerate // NOSONAR
+    public PersistenceEvent() { // NOSONAR
     }
 
     public Event asEvent() {
