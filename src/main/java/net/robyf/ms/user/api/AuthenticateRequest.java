@@ -21,8 +21,8 @@ public class AuthenticateRequest {
     @NotEmpty
     private String password;
 
-    @Tolerate
-    public AuthenticateRequest() {
+    @Tolerate // NOSONAR
+    public AuthenticateRequest() { // NOSONAR
     }
 
 }

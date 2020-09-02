@@ -32,8 +32,8 @@ public class CreateUserRequest {
     @NotEmpty
     private String password;
 
-    @Tolerate
-    public CreateUserRequest() {
+    @Tolerate // NOSONAR
+    public CreateUserRequest() { // NOSONAR
     }
 
 }

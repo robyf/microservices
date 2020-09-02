@@ -69,7 +69,7 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return StreamSupport.stream(repository.findAll().spliterator(), false)
-                .map(u -> u.asUser())
+                .map(PersistenceUser::asUser)
                 .collect(Collectors.toList());
     }
 

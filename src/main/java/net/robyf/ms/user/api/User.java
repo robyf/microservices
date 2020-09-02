@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
-import net.robyf.ms.user.persistence.PersistenceUser;
 
 import java.util.UUID;
 

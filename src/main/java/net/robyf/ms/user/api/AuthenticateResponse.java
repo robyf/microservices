@@ -19,8 +19,8 @@ public class AuthenticateResponse {
 
     private User user;
 
-    @Tolerate
-    public AuthenticateResponse() {
+    @Tolerate // NOSONAR
+    public AuthenticateResponse() { // NOSONAR
     }
 
 }
