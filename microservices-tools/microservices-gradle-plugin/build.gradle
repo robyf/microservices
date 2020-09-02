@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'java-gradle-plugin'
     id 'jacoco'
+    id 'groovy'
 }
 
 description = 'Microservices Gradle Plugin'
