@@ -8,6 +8,7 @@ import net.robyf.ms.user.api.User;
 import net.robyf.ms.user.persistence.PersistenceUser;
 import net.robyf.ms.user.persistence.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
@@ -25,12 +26,13 @@ public class UserService {
     private UsersRepository repository;
 
     public User createUser(final CreateUserRequest request) {
+        String salt = BCrypt.gensalt(10);
+
         PersistenceUser pUser = PersistenceUser.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
-                // TODO: encrypt password
-                .password(request.getPassword())
+                .password(BCrypt.hashpw(request.getPassword(), salt))
                 .build();
         repository.save(pUser);
 
@@ -59,8 +61,7 @@ public class UserService {
             return AuthenticateResponse.builder().status(AuthenticateStatus.FAIL).build();
         }
         PersistenceUser pUser = opUser.get();
-        // TODO: consider password encryption
-        if (!request.getPassword().equals(pUser.getPassword())) {
+        if (!BCrypt.checkpw(request.getPassword(), pUser.getPassword())) {
             return AuthenticateResponse.builder().status(AuthenticateStatus.FAIL).build();
         }
         return AuthenticateResponse.builder().status(AuthenticateStatus.SUCCESS).user(pUser.asUser()).build();
