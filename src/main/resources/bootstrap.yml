@@ -2,3 +2,5 @@ spring:
   application:
     name: user-service
     version: ${version}
+    title: User management service
+    description: Manages users.
