@@ -35,8 +35,10 @@ public class UserController {
 
     public static final String BASE_PATH = "/v1/users"; // NOSONAR
     public static final String LIST_ENDPOINT = "/";
+    public static final String CREATE_ENDPOINT = "/";
     public static final String GET_BY_ID_ENDPOINT = "/id/{id}";
     public static final String GET_BY_EMAIL_ENDPOINT = "/email/{email}";
+    public static final String AUTHENTICATE_ENDPOINT = "/authenticate";
 
     @Autowired
     private UserService service;
@@ -46,7 +48,7 @@ public class UserController {
         return ResponseEntity.ok(service.getAllUsers());
     }
 
-    @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = CREATE_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createUser(@Valid @RequestBody final CreateUserRequest request) {
         log.info("Create user request {}", request);
         return ResponseEntity.ok(service.createUser(request));
@@ -67,7 +69,7 @@ public class UserController {
         return ResponseEntity.ok(service.getUserByEmail(email));
     }
 
-    @PostMapping(path = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = AUTHENTICATE_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticateResponse> authenticate(@Valid @RequestBody final AuthenticateRequest request) {
         log.info("Authenticate request {}", request);
         return ResponseEntity.ok(service.authenticate(request));

@@ -1,5 +1,9 @@
 package net.robyf.ms.user;
 
+import net.robyf.ms.user.api.AuthenticateRequest;
+import net.robyf.ms.user.api.AuthenticateResponse;
+import net.robyf.ms.user.api.AuthenticateStatus;
+import net.robyf.ms.user.api.CreateUserRequest;
 import net.robyf.ms.user.api.User;
 import net.robyf.ms.user.persistence.PersistenceUser;
 import net.robyf.ms.user.persistence.UsersRepository;
@@ -94,11 +98,75 @@ public class UserControllerTest {
         assertUserEquals(pUser, get.getBody());
     }
 
+    @Test
+    public void testCreateUser() throws Exception {
+        CreateUserRequest request = CreateUserRequest.builder()
+                .firstName("Teppo").lastName("Testaaja").email("teppo@iki.fi").password("secret").build();
+        String uri = UriComponentsBuilder.fromPath(UserController.BASE_PATH + UserController.CREATE_ENDPOINT).build().toUriString();
+        ResponseEntity<User> get = restTemplate.postForEntity(uri, request, User.class);
+        assertThat(get.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(get.getBody()).isNotNull();
+        assertThat(get.getBody().getId()).isNotNull();
+        assertThat(get.getBody().getFirstName()).isEqualTo("Teppo");
+        assertThat(get.getBody().getLastName()).isEqualTo("Testaaja");
+        assertThat(get.getBody().getEmail()).isEqualTo("teppo@iki.fi");
+
+        PersistenceUser pUser = repository.findById(get.getBody().getId()).get();
+        assertUserEquals(pUser, get.getBody());
+    }
+
+    @Test
+    public void testAuthenticateMissingUser() throws Exception {
+        AuthenticateRequest request = AuthenticateRequest.builder().email("teppo@iki.fi").password("secret").build();
+        String uri = UriComponentsBuilder.fromPath(UserController.BASE_PATH + UserController.AUTHENTICATE_ENDPOINT).build().toUriString();
+        ResponseEntity<AuthenticateResponse> get = restTemplate.postForEntity(uri, request, AuthenticateResponse.class);
+        assertThat(get.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(get.getBody()).isNotNull();
+        assertThat(get.getBody().getStatus()).isEqualTo(AuthenticateStatus.FAIL);
+        assertThat(get.getBody().getUser()).isNull();
+    }
+
+    @Test
+    public void testAuthenticateWrongPassword() throws Exception {
+        createUser(CreateUserRequest.builder()
+                .firstName("Teppo").lastName("Testaaja").email("teppo@iki.fi").password("secret").build());
+
+        AuthenticateRequest request = AuthenticateRequest.builder().email("teppo@iki.fi").password("wrong").build();
+        String uri = UriComponentsBuilder.fromPath(UserController.BASE_PATH + UserController.AUTHENTICATE_ENDPOINT).build().toUriString();
+        ResponseEntity<AuthenticateResponse> get = restTemplate.postForEntity(uri, request, AuthenticateResponse.class);
+        assertThat(get.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(get.getBody()).isNotNull();
+        assertThat(get.getBody().getStatus()).isEqualTo(AuthenticateStatus.FAIL);
+        assertThat(get.getBody().getUser()).isNull();
+    }
+
+    @Test
+    public void testAuthenticateRightPassword() throws Exception {
+        createUser(CreateUserRequest.builder()
+                .firstName("Teppo").lastName("Testaaja").email("teppo@iki.fi").password("secret").build());
+
+        AuthenticateRequest request = AuthenticateRequest.builder().email("teppo@iki.fi").password("secret").build();
+        String uri = UriComponentsBuilder.fromPath(UserController.BASE_PATH + UserController.AUTHENTICATE_ENDPOINT).build().toUriString();
+        ResponseEntity<AuthenticateResponse> get = restTemplate.postForEntity(uri, request, AuthenticateResponse.class);
+        assertThat(get.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(get.getBody()).isNotNull();
+        assertThat(get.getBody().getStatus()).isEqualTo(AuthenticateStatus.SUCCESS);
+        assertThat(get.getBody().getUser()).isNotNull();
+    }
+
     private void assertUserEquals(final PersistenceUser pUser, final User user) {
         assertThat(user.getId()).isEqualTo(pUser.getId());
         assertThat(user.getFirstName()).isEqualTo(pUser.getFirstName());
         assertThat(user.getLastName()).isEqualTo(pUser.getLastName());
         assertThat(user.getEmail()).isEqualTo(pUser.getEmail());
+    }
+
+    private User createUser(final CreateUserRequest request) {
+        String uri = UriComponentsBuilder.fromPath(UserController.BASE_PATH + UserController.CREATE_ENDPOINT).build().toUriString();
+        ResponseEntity<User> get = restTemplate.postForEntity(uri, request, User.class);
+        assertThat(get.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(get.getBody()).isNotNull();
+        return get.getBody();
     }
 
 }
