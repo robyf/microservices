@@ -24,7 +24,7 @@ public class ZonedDateTimeDeserializer extends JsonDeserializer<ZonedDateTime> {
             return ZonedDateTime.parse(string, formatter);
         }
 
-        throw context.wrongTokenException(parser, JsonToken.VALUE_STRING, "Expected string.");
+        throw context.wrongTokenException(parser, String.class, JsonToken.VALUE_STRING, "Expected string.");
     }
 
 }
