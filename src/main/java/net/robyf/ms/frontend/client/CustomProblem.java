@@ -13,7 +13,7 @@ public class CustomProblem {
     String detail;
 
     @Tolerate // NOSONAR
-    public CustomProblem() {
+    public CustomProblem() { // NOSONAR
     }
 
 }

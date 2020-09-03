@@ -7,6 +7,7 @@ import graphql.language.SourceLocation;
 import net.robyf.ms.frontend.client.CustomFeignClientException;
 import org.zalando.problem.DefaultProblem;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class ClientException extends RuntimeException implements GraphQLError {
 
     @Override
     public List<SourceLocation> getLocations() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

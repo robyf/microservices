@@ -1,12 +1,12 @@
 package net.robyf.ms.frontend.client;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.zalando.problem.Problem;
 
 import java.io.IOException;
 
@@ -21,15 +21,15 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String methodKey, Response response) {
-        log.info("response headers {}", response.headers());
+        log.debug("response headers {}", response.headers());
         if (response.headers().get("content-type").contains("application/problem+json")) {
-            log.info("feign error with problem {}", methodKey);
+            log.debug("feign error with problem {}", methodKey);
             if (isClientErrorStatus(response.status())) {
-                log.info("client error");
+                log.debug("client error");
 
-                try {
-                    CustomProblem problem = objectMapper.createParser(response.body().asInputStream()).readValueAs(CustomProblem.class);
-                    log.info("parsed problem {}", problem);
+                try (JsonParser parser = objectMapper.createParser(response.body().asInputStream())) {
+                    CustomProblem problem = parser.readValueAs(CustomProblem.class);
+                    log.debug("parsed problem {}", problem);
                     return CustomFeignClientException.decode(problem);
                 } catch (IOException ioe) {
                     log.error("Error parsing response problem", ioe);

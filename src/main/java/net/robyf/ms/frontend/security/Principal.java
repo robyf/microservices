@@ -1,7 +1,7 @@
 package net.robyf.ms.frontend.security;
 
-import lombok.Data;
 import lombok.Builder;
+import lombok.Data;
 import lombok.experimental.Tolerate;
 
 import java.io.Serializable;

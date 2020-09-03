@@ -20,8 +20,7 @@ public class UserQuery implements GraphQLQueryResolver {
     public User currentUser() {
         Principal principal = principalHelper.getPrincipal();
         if (principal != null) {
-            User user = userService.get(principal.getUserId());
-            return user;
+            return userService.get(principal.getUserId());
         }
         return null;
     }

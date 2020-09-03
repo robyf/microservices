@@ -1,8 +1,11 @@
 package net.robyf.ms.frontend.session;
 
-public interface SessionKeys {
+public abstract class SessionKeys {
 
-    String USER_ID = "user_id";
-    String ACCOUNT_ID = "account_id";
+    public static final String USER_ID = "user_id";
+    public static final String ACCOUNT_ID = "account_id";
+
+    private SessionKeys() {
+    }
 
 }

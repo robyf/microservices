@@ -1,7 +1,6 @@
 package net.robyf.ms.frontend.graphql.lending;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
 import net.robyf.ms.frontend.client.CustomFeignClientException;
 import net.robyf.ms.frontend.client.LendingServiceClient;
@@ -18,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -36,7 +33,7 @@ public class LendingMutation implements GraphQLMutationResolver {
     @Autowired
     private PrincipalHelper principalHelper;
 
-    public Account createLendingAccount(final DataFetchingEnvironment env) {
+    public Account createLendingAccount() {
         log.info("Call to create lending account");
         Principal principal = principalHelper.ensurePrincipal();
         try {
