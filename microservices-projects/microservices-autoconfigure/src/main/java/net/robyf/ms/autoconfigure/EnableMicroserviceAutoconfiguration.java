@@ -5,6 +5,7 @@ import net.robyf.ms.autoconfigure.jackson.JacksonConfigurationLocal;
 import net.robyf.ms.autoconfigure.security.FeignConfiguration;
 import net.robyf.ms.autoconfigure.security.SecurityConfiguration;
 import net.robyf.ms.autoconfigure.security.SecurityFilter;
+import net.robyf.ms.autoconfigure.swagger.SwaggerConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.Documented;
@@ -23,7 +24,8 @@ import java.lang.annotation.Target;
         JacksonConfigurationLocal.class,
         SecurityConfiguration.class,
         SecurityFilter.class,
-        ExceptionHandling.class
+        ExceptionHandling.class,
+        SwaggerConfiguration.class
 })
 public @interface EnableMicroserviceAutoconfiguration {
 }
