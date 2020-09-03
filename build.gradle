@@ -1,31 +1,22 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url = "/Users/roberto/work/microservices/repo"
+        }
+    }
+    dependencies {
+        classpath "net.robyf.ms:microservices-gradle-plugin:Akaa.SR1-SNAPSHOT"
+    }
+}
+
 plugins {
     id 'java'
-    id 'jacoco'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'org.springframework.boot' version '2.3.2.RELEASE'
     id 'io.franzbecker.gradle-lombok' version '4.0.0'
-    id 'org.sonarqube' version '3.0'
+    id 'maven-publish'
 }
 
-repositories {
-    jcenter()
-    maven {
-        url = "/Users/roberto/work/microservices/repo"
-    }
-}
-
-dependencyManagement {
-    imports {
-        mavenBom 'net.robyf.ms:microservices-dependencies:Akaa.SR1-SNAPSHOT'
-    }
-}
-
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, "minutes"
-}
-
-group = "net.robyf.ms"
-version = "local"
+apply plugin: "net.robyf.ms.gradle"
 
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
@@ -38,6 +29,7 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
     implementation group: 'org.springframework.session', name: 'spring-session-data-redis'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis'
+    implementation group: 'net.robyf.ms', name: 'microservices-autoconfigure'
     implementation group: 'org.zalando', name: 'problem-spring-web'
     implementation group: 'io.springfox', name: 'springfox-boot-starter'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui'
@@ -53,18 +45,6 @@ dependencies {
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'junit', name: 'junit'
 }
-
-processResources {
-    expand(project.properties)
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-    }
-}
-
-test.finalizedBy(project.tasks.jacocoTestReport)
 
 bootRun {
     systemProperties = [
