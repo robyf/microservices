@@ -19,6 +19,7 @@ class SonarqubeFeature implements Feature {
             }
 
             project.tasks.test.finalizedBy(project.tasks.jacocoTestReport)
+            project.tasks.sonarqube.dependsOn(project.tasks.check)
         }
     }
 
