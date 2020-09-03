@@ -2,6 +2,7 @@ package net.robyf.ms.gradle.plugin
 
 import net.robyf.ms.gradle.plugin.feature.DependencyManagementFeature
 import net.robyf.ms.gradle.plugin.feature.RepositoryFeature
+import net.robyf.ms.gradle.plugin.feature.ResourcesFeature
 import net.robyf.ms.gradle.plugin.feature.SonarqubeFeature
 import net.robyf.ms.gradle.plugin.feature.SpringBootFeature
 import org.gradle.api.Plugin
@@ -38,6 +39,7 @@ class MicroservicesPlugin implements Plugin<PluginAware> {
         new SpringBootFeature().apply(project);
         new RepositoryFeature().apply(project);
         new SonarqubeFeature().apply(project);
+        new ResourcesFeature().apply(project);
     }
 
 }
