@@ -5,8 +5,6 @@ import net.robyf.ms.scoring.api.ScoringResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(name = "scoring", url = "http://localhost:7002/scoring-service")
 public interface ScoringServiceClient {
