@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Roberto Fasciolo",
+      "authorEmail": "rob@robyf.net",
+      "authorUrl": "https://www.robyf.net"
+    }
+  }
+}
