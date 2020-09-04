@@ -39,7 +39,7 @@ module.exports = class extends Generator {
     this.props = await this.prompt(prompts);
   }
 
-  writing() {
+  _generateGitFiles() {
     this.fs.copy(
       this.templatePath(".gitattributes"),
       this.destinationPath(".gitattributes")
@@ -48,6 +48,9 @@ module.exports = class extends Generator {
       this.templatePath(".gitignore"),
       this.destinationPath(".gitignore")
     );
+  }
+
+  _generateGradleFiles() {
     this.fs.copy(
       this.templatePath("gradle/**"),
       this.destinationPath("gradle")
@@ -73,7 +76,44 @@ module.exports = class extends Generator {
     );
   }
 
-  install() {
-    // this.installDependencies();
+  _generateResources() {
+    this.fs.copyTpl(
+      this.templatePath("src/main/resources/**"),
+      this.destinationPath("src/main/resources"),
+      {
+        name: this.props.name,
+        title: this.props.title,
+        description: this.props.description
+      }
+    );
+    this.fs.copy(
+      this.templatePath("src/test/resources/**"),
+      this.destinationPath("src/test/resources")
+    );
+  }
+
+  _generateJavaStuff() {
+    const packageDir = this.props.package.replace(/\./g, "/");
+    this.fs.copy(
+      this.templatePath("lombok.config"),
+      this.destinationPath("lombok.config")
+    );
+    this.fs.copyTpl(
+      this.templatePath("src/main/java/**"),
+      this.destinationPath("src/main/java/" + packageDir),
+      {
+        name: this.props.name,
+        title: this.props.title,
+        description: this.props.description,
+        package: this.props.package
+      }
+    );
+  }
+
+  writing() {
+    this._generateGitFiles();
+    this._generateGradleFiles();
+    this._generateResources();
+    this._generateJavaStuff();
   }
 };
