@@ -34,14 +34,14 @@ public class AuthenticationController {
                                       HttpServletRequest httpRequest) {
         log.info("Login request for {}", request.getEmail());
         service.login(request, httpRequest);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = LOGOUT_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> logout(HttpServletRequest httpRequest) {
         log.info("Logout request");
         service.logout(httpRequest);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().build();
     }
 
 }

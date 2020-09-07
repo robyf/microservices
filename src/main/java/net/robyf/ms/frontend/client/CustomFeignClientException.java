@@ -27,11 +27,31 @@ public class CustomFeignClientException extends RuntimeException {
 
     public static CustomFeignClientException decode(final CustomProblem problem) {
         switch (problem.getStatus()) {
+            case 401:
+                return new CustomFeignClientException.Unauthorized(problem);
+            case 403:
+                return new CustomFeignClientException.Forbidden(problem);
             case 404:
                 return new CustomFeignClientException.NotFound(problem);
             default:
                 return new CustomFeignClientException(problem);
         }
+    }
+
+    public static class Unauthorized extends CustomFeignClientException {
+
+        public Unauthorized(final CustomProblem problem) {
+            super(problem);
+        }
+
+    }
+
+    public static class Forbidden extends CustomFeignClientException {
+
+        public Forbidden(final CustomProblem problem) {
+            super(problem);
+        }
+
     }
 
     public static class NotFound extends CustomFeignClientException {
