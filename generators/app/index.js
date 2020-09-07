@@ -110,10 +110,18 @@ module.exports = class extends Generator {
     );
   }
 
+  _generateDockerStuff() {
+    this.fs.copy(
+      this.templatePath("src/main/docker/**"),
+      this.destinationPath("src/main/docker")
+    );
+  }
+
   writing() {
     this._generateGitFiles();
     this._generateGradleFiles();
     this._generateResources();
     this._generateJavaStuff();
+    this._generateDockerStuff();
   }
 };
