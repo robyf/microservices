@@ -1,6 +1,7 @@
 package net.robyf.ms.gradle.plugin
 
 import net.robyf.ms.gradle.plugin.feature.DependencyManagementFeature
+import net.robyf.ms.gradle.plugin.feature.DockerFeature
 import net.robyf.ms.gradle.plugin.feature.RepositoryFeature
 import net.robyf.ms.gradle.plugin.feature.ResourcesFeature
 import net.robyf.ms.gradle.plugin.feature.SonarqubeFeature
@@ -40,6 +41,7 @@ class MicroservicesPlugin implements Plugin<PluginAware> {
         new RepositoryFeature().apply(project);
         new SonarqubeFeature().apply(project);
         new ResourcesFeature().apply(project);
+        new DockerFeature().apply(project);
     }
 
 }
