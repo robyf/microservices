@@ -39,6 +39,7 @@ public class PersistenceUser {
 
     @Tolerate
     public PersistenceUser() {
+        // Needed by spring
     }
 
     public User asUser() {
