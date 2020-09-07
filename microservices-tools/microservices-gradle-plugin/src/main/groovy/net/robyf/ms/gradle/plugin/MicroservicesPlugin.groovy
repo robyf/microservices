@@ -33,8 +33,7 @@ class MicroservicesPlugin implements Plugin<PluginAware> {
 
     private void doApply(final Project project) {
         PluginProperties props = new PluginProperties();
-        System.out.println(props.getProperty(PluginProperties.PLUGIN_VERSION));
-        System.out.println(props.getProperty(PluginProperties.SPRING_BOOT_VERSION));
+        project.logger.info("Using Microservices plugin version ${props.getProperty(PluginProperties.PLUGIN_VERSION)}");
 
         new DependencyManagementFeature().apply(project);
         new SpringBootFeature().apply(project);
