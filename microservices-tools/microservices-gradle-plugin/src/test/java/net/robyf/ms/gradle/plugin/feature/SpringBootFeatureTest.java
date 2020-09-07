@@ -24,7 +24,7 @@ public class SpringBootFeatureTest {
         Project project = ProjectBuilder.builder().withProjectDir(tmpDir).build();
         project.getPlugins().apply(TestPlugin.class);
 
-        assertThat(project.getPlugins().hasPlugin(SpringBootPlugin.class));
+        assertThat(project.getPlugins().hasPlugin(SpringBootPlugin.class)).isTrue();
     }
 
     final static class TestPlugin implements Plugin<Project> {

@@ -10,17 +10,16 @@ import org.springframework.core.env.StandardEnvironment;
 public class PropertiesConfiguration {
 
     private final ConfigurableEnvironment context;
+    private boolean isLocal = false;
+    private boolean isDev = false;
+    private boolean isCi = false;
+    private boolean isProd = false;
 
     public PropertiesConfiguration(final ConfigurableEnvironment context) {
         this.context = context;
     }
 
-    Profile resolveProfile() {
-        boolean isLocal = false;
-        boolean isDev = false;
-        boolean isCi = false;
-        boolean isProd = false;
-
+    private void detectProfiles() {
         for (String profile : context.getActiveProfiles()) {
             if ("local".equals(profile) || profile.startsWith("local-") || "test".equals(profile) || profile.startsWith("test-")) {
                 isLocal = true;
@@ -35,7 +34,9 @@ public class PropertiesConfiguration {
                 isProd = true;
             }
         }
+    }
 
+    private void assertValidProfiles() {
         int count = (isLocal ? 1 : 0) + (isDev ? 1 : 0) + (isCi ? 1 : 0) + (isProd ? 1 : 0);
         if (count == 0) {
             throw new AutoconfigurationException("No valid profile found. One between local, local-*, test, test-*, dev, dev-*, ci, ci-*, prod, prod-* must be active");
@@ -43,6 +44,11 @@ public class PropertiesConfiguration {
         if (count > 1) {
             throw new AutoconfigurationException("Multiple profiles found. One and only one between local, local-*, test, test-*, dev, dev-*, ci, ci-*, prod, prod-* must be active");
         }
+    }
+
+    Profile resolveProfile() {
+        detectProfiles();
+        assertValidProfiles();
 
         if (isLocal) {
             return Profile.LOCAL;

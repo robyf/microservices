@@ -24,7 +24,7 @@ public class DependencyManagementFeatureTest {
         Project project = ProjectBuilder.builder().withProjectDir(tmpDir).build();
         project.getPlugins().apply(TestPlugin.class);
 
-        assertThat(project.getPlugins().hasPlugin(DependencyManagementPlugin.class));
+        assertThat(project.getPlugins().hasPlugin(DependencyManagementPlugin.class)).isTrue();
     }
 
     final static class TestPlugin implements Plugin<Project> {
