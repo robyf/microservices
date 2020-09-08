@@ -26,6 +26,8 @@ class DockerFeatureTest {
         project.getPlugins().apply('java');
         project.getPlugins().apply(TestPlugin.class);
 
+        project.evaluate();
+
         assertThat(project.getConfigurations().findByName("docker")).isNotNull();
     }
 
@@ -37,6 +39,8 @@ class DockerFeatureTest {
         project.getPlugins().apply('java');
         project.getPlugins().apply(SpringBootPlugin.class);
         project.getPlugins().apply(TestPlugin.class);
+
+        project.evaluate();
 
         assertThat(project.getConfigurations().findByName("docker")).isNotNull();
     }

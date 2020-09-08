@@ -25,6 +25,8 @@ class RepositoryFeatureTest {
         project.getPlugins().apply('maven-publish');
         project.getPlugins().apply(TestPlugin.class);
 
+        project.evaluate();
+
         List<String> dependencyRepos = project.getRepositories().stream().map{it.getName()}.collect(Collectors.toList());
         assertThat(dependencyRepos).containsExactly("BintrayJCenter", "MavenLocal");
 
@@ -39,6 +41,8 @@ class RepositoryFeatureTest {
 
         Project project = ProjectBuilder.builder().withProjectDir(tmpDir).build();
         project.getPlugins().apply(TestPlugin.class);
+
+        project.evaluate();
 
         List<String> dependencyRepos = project.getRepositories().stream().map{it.getName()}.collect(Collectors.toList());
         assertThat(dependencyRepos).containsExactly("BintrayJCenter", "MavenLocal");
