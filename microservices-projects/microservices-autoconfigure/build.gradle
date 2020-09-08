@@ -17,6 +17,14 @@ dependencies {
     testImplementation group: 'junit', name: 'junit'
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+test.finalizedBy(project.tasks.jacocoTestReport)
+
 publishing {
     publications {
         maven(MavenPublication) {
