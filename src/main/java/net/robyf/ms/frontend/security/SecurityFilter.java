@@ -29,17 +29,19 @@ public class SecurityFilter implements Filter {
         if (session != null) {
             UUID userId = (UUID) session.getAttribute(SessionKeys.USER_ID);
             UUID accountId = (UUID) session.getAttribute(SessionKeys.ACCOUNT_ID);
-            log.info("Incoming request for user {} account {}", userId, accountId);
+            UUID sessionId = UUID.fromString(session.getId());
+            log.debug("Incoming request for user {} account {} session {}", userId, accountId, sessionId);
 
             Principal principal = Principal.builder()
                     .userId(userId)
                     .accountId(accountId)
+                    .sessionId(sessionId)
                     .build();
 
             Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } else {
-            log.info("Incoming request without principal");
+            log.debug("Incoming request without principal");
         }
 
         chain.doFilter(request, response);
