@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,18 +47,24 @@ public class SecurityFilter implements Filter {
                 Principal principal = Principal.builder()
                         .jwt(jwtString)
                         .userId(UUID.fromString(userIdStr))
+                        .sessionId(UUID.fromString(sessionIdStr))
                         .accountId(accountIdStr == null ? null : UUID.fromString(accountIdStr))
-                        .sessionId(sessionIdStr == null ? null : UUID.fromString(sessionIdStr))
                         .build();
 
                 Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
                 SecurityContextHolder.getContext().setAuthentication(auth);
+
+                MDC.put("user-id", userIdStr);
+                MDC.put("session-id", sessionIdStr);
             } catch (JWTVerificationException jve) {
                 log.error("Error verifying jwt", jve);
             }
         }
 
         chain.doFilter(request, response);
+
+        MDC.remove("user-id");
+        MDC.remove("session-id");
     }
 
 }
