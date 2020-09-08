@@ -50,7 +50,7 @@ public class AuthenticationService {
         }
 
         HttpSession session = httpRequest.getSession(true);
-        SpringSessionBackedSessionRegistry sessionRegistry = new SpringSessionBackedSessionRegistry(sessions);
+        SpringSessionBackedSessionRegistry<? extends Session> sessionRegistry = new SpringSessionBackedSessionRegistry<>(sessions);
 
         this.sessions.findByPrincipalName(authResponse.getUser().getId().toString()).values().forEach(s -> {
             if (!s.getId().equals(session.getId())) {
