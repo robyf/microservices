@@ -48,3 +48,34 @@ server:
 management:
   server:
     port: 8001
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:h2:mem:userdb
+    username: sa
+    password:
+  sleuth:
+    sampler:
+      probability: 100
+
+  jpa:
+    generate-ddl: true
+    show-sql: false
+    hibernate.ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.H2Dialect
+      javax.persistence:
+        schema-generation:
+          create-source=metadata
+          scripts.action=create
+          scripts.create-target=build/create.sql
+
+server:
+  port:
+    8000
+
+management:
+  server:
+    port: 8001

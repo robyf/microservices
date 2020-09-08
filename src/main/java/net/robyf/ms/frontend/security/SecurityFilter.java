@@ -2,6 +2,7 @@ package net.robyf.ms.frontend.security;
 
 import lombok.extern.slf4j.Slf4j;
 import net.robyf.ms.frontend.session.SessionKeys;
+import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,11 +41,17 @@ public class SecurityFilter implements Filter {
 
             Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+            MDC.put("user-id", userId.toString());
+            MDC.put("session-id", sessionId.toString());
         } else {
             log.debug("Incoming request without principal");
         }
 
         chain.doFilter(request, response);
+
+        MDC.remove("user-id");
+        MDC.remove("session-id");
     }
 
 }
