@@ -27,7 +27,7 @@ import java.util.UUID;
 public class SecurityFilter implements Filter {
 
     // TODO: use RS256 or RS512
-    private Algorithm algorithm = Algorithm.HMAC256("_secret_password_");
+    private final Algorithm algorithm = Algorithm.HMAC256("_secret_password_");
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -38,14 +38,16 @@ public class SecurityFilter implements Filter {
             JWTVerifier verifier = JWT.require(algorithm).withIssuer("frontend-service").build();
             try {
                 DecodedJWT jwt = verifier.verify(jwtString);
-                String userIdStr = jwt.getClaim("user_id").asString();
-                String accountIdStr = jwt.getClaim("account_id").asString();
-                log.debug("Incoming request for user {} account {}", userIdStr, accountIdStr);
+                String userIdStr = jwt.getClaim(Claims.USER_ID).asString();
+                String accountIdStr = jwt.getClaim(Claims.ACCOUNT_ID).asString();
+                String sessionIdStr = jwt.getClaim(Claims.SESSION_ID).asString();
+                log.debug("Incoming request for user {} account {} session {}", userIdStr, accountIdStr, sessionIdStr);
 
                 Principal principal = Principal.builder()
                         .jwt(jwtString)
                         .userId(UUID.fromString(userIdStr))
                         .accountId(accountIdStr == null ? null : UUID.fromString(accountIdStr))
+                        .sessionId(sessionIdStr == null ? null : UUID.fromString(sessionIdStr))
                         .build();
 
                 Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);

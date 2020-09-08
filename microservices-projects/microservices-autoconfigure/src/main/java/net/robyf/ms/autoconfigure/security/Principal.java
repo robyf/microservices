@@ -14,6 +14,7 @@ public class Principal implements Serializable {
     private String jwt;
     private UUID userId;
     private UUID accountId;
+    private UUID sessionId;
 
     @Tolerate // NOSONAR
     public Principal() { // NOSONAR
