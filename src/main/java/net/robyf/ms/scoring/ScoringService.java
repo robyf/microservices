@@ -1,7 +1,7 @@
 package net.robyf.ms.scoring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
 import net.robyf.ms.scoring.api.ScoringRequest;
 import net.robyf.ms.scoring.api.ScoringResponse;
 import net.robyf.ms.scoring.persistence.Scoring;
@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-@Slf4j
 public class ScoringService {
 
     private static final BigDecimal THRESHOLD = BigDecimal.valueOf(3000);
@@ -41,13 +40,10 @@ public class ScoringService {
         return ScoringResponse.builder().scoringId(scoring.getId()).probabilityOfDefault(pod).build();
     }
 
+    @SneakyThrows(IOException.class)
     private String toJson(final ScoringRequest request) {
         StringWriter writer = new StringWriter();
-        try {
-            objectMapper.writeValue(writer, request);
-        } catch (IOException e) {
-            log.error("Error serializing", e);
-        }
+        objectMapper.writeValue(writer, request);
         return writer.toString();
     }
 
