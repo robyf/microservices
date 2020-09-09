@@ -2,14 +2,11 @@ package net.robyf.ms.gradle.plugin.feature
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.publish.PublishingExtension
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
-import java.util.stream.Collectors
 
 import static org.assertj.core.api.Assertions.assertThat
 

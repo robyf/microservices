@@ -6,11 +6,10 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import org.sonarqube.gradle.SonarQubePlugin
 
 import static org.assertj.core.api.Assertions.assertThat
 
-class SonarqubeFeatureTest {
+class ResourcesFeatureTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -25,15 +24,14 @@ class SonarqubeFeatureTest {
 
         project.evaluate();
 
-        assertThat(project.getPlugins().hasPlugin('jacoco')).isTrue();
-        assertThat(project.getPlugins().hasPlugin(SonarQubePlugin.class));
+        assertThat(project.getPlugins().hasPlugin(TestPlugin.class)).isTrue();
     }
 
     static final class TestPlugin implements Plugin<Project> {
 
         @Override
         void apply(Project project) {
-            new SonarqubeFeature().apply(project);
+            new ResourcesFeature().apply(project);
         }
 
     }
