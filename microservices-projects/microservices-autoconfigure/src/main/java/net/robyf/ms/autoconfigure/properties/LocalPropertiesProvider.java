@@ -16,8 +16,10 @@ class LocalPropertiesProvider implements PropertiesProvider {
 
         props.put(PropertyNames.LOGGING_LEVEL_NET_ROBYF_MS, "DEBUG");
 
-        props.put("info.app.name", appName);
-        props.put("info.app.version", appVersion);
+        props.put(PropertyNames.FEIGN_HYSTRIX_ENABLED, true);
+
+        props.put(PropertyNames.INFO_APP_NAME, appName);
+        props.put(PropertyNames.INFO_APP_VERSION, appVersion);
 
         return props;
     }
