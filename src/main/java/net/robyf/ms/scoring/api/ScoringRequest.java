@@ -4,9 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -18,8 +16,8 @@ public class ScoringRequest {
     @Min(0)
     private BigDecimal income;
 
-    @Tolerate
-    public ScoringRequest() {
+    @Tolerate // NOSONAR
+    public ScoringRequest() { // NOSONAR
     }
 
 }

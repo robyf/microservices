@@ -24,8 +24,8 @@ public class ScoringResponse {
     @Max(1)
     private BigDecimal probabilityOfDefault;
 
-    @Tolerate
-    public ScoringResponse() {
+    @Tolerate // NOSONAR
+    public ScoringResponse() { // NOSONAR
     }
 
 }

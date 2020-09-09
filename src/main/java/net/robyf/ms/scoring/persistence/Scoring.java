@@ -28,8 +28,8 @@ public class Scoring {
     @Column (name = "pod", nullable = false)
     private BigDecimal probabilityOfDefault;
 
-    @Tolerate
-    public Scoring() {
+    @Tolerate // NOSONAR
+    public Scoring() { // NOSONAR
     }
 
 }
