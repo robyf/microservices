@@ -1,0 +1,7 @@
+query {
+    lendingAccount {
+        id
+        status
+        balance
+    }
+}
