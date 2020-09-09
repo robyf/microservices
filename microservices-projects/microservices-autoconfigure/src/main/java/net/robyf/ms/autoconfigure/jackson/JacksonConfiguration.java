@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import feign.Feign;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.zalando.problem.ProblemModule;
@@ -16,14 +13,8 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-@ConditionalOnClass(Feign.class)
-@Slf4j
 @Profile("!local & !test")
 public class JacksonConfiguration {
-
-    public JacksonConfiguration() {
-        log.info("Importing jackson configuration");
-    }
 
     @Bean
     public ObjectMapper objectMapper() {
