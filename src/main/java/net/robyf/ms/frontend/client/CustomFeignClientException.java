@@ -1,6 +1,8 @@
 package net.robyf.ms.frontend.client;
 
-public class CustomFeignClientException extends RuntimeException {
+import com.netflix.hystrix.exception.HystrixBadRequestException;
+
+public class CustomFeignClientException extends HystrixBadRequestException {
 
     private final int statusCode;
     private final String title;

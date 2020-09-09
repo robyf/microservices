@@ -18,6 +18,10 @@ info:
     name: \${spring.application.name}
     version: \${spring.application.version}
 
+feign:
+  hystrix:
+    enabled: true
+
 ---
 spring:
   profiles: local
@@ -48,6 +52,19 @@ server:
 management:
   server:
     port: 8001
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream, health, info
+      cors:
+        allowed-origins: true
+  endpoint:
+    health:
+      show-details: always
+
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"
 
 ---
 spring:
