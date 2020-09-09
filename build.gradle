@@ -43,6 +43,7 @@ dependencies {
     implementation group: 'net.robyf.ms', name: 'lending-service-api', version: '1.0-SNAPSHOT'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testImplementation group: 'com.graphql-java', name: 'graphql-spring-boot-starter-test'
     testImplementation group: 'junit', name: 'junit'
 }
 
