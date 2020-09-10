@@ -1,5 +1,6 @@
 package net.robyf.ms.autoconfigure;
 
+import net.robyf.ms.autoconfigure.feign.CustomFeignErrorDecoder;
 import net.robyf.ms.autoconfigure.jackson.JacksonConfiguration;
 import net.robyf.ms.autoconfigure.jackson.JacksonConfigurationLocal;
 import net.robyf.ms.autoconfigure.security.FeignConfiguration;
@@ -25,7 +26,8 @@ import java.lang.annotation.Target;
         SecurityConfiguration.class,
         SecurityFilter.class,
         ExceptionHandling.class,
-        SwaggerConfiguration.class
+        SwaggerConfiguration.class,
+        CustomFeignErrorDecoder.class
 })
 public @interface EnableMicroserviceAutoconfiguration {
 }
