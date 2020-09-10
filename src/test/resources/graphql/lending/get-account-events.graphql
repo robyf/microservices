@@ -1,0 +1,9 @@
+query {
+    accountEvents {
+        id
+        time
+        type
+        amount
+        resultingBalance
+    }
+}

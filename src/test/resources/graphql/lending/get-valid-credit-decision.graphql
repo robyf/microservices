@@ -1,0 +1,8 @@
+query {
+    validCreditDecision {
+        id
+        status
+        positive
+        amount
+    }
+}
