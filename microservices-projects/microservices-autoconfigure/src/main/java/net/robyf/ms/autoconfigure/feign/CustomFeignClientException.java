@@ -10,7 +10,7 @@ public class CustomFeignClientException extends HystrixBadRequestException {
 
     public CustomFeignClientException(final CustomProblem problem) {
         super(problem.getTitle());
-        this.statusCode = problem.getStatus();
+        this.statusCode = problem.getStatus().getStatusCode();
         this.title = problem.getTitle();
         this.detail = problem.getDetail();
     }
@@ -29,11 +29,11 @@ public class CustomFeignClientException extends HystrixBadRequestException {
 
     public static CustomFeignClientException decode(final CustomProblem problem) {
         switch (problem.getStatus()) {
-            case 401:
+            case UNAUTHORIZED:
                 return new Unauthorized(problem);
-            case 403:
+            case FORBIDDEN:
                 return new Forbidden(problem);
-            case 404:
+            case NOT_FOUND:
                 return new NotFound(problem);
             default:
                 return new CustomFeignClientException(problem);
