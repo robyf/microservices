@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import graphql.ErrorType;
 import graphql.GraphQLError;
 import graphql.language.SourceLocation;
-import net.robyf.ms.frontend.client.CustomFeignClientException;
+import net.robyf.ms.autoconfigure.feign.CustomFeignClientException;
 import org.zalando.problem.DefaultProblem;
 
 import java.util.Collections;

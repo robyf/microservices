@@ -2,6 +2,7 @@ package net.robyf.ms.frontend;
 
 import net.robyf.ms.autoconfigure.ExceptionHandling;
 import net.robyf.ms.autoconfigure.MicroserviceConfiguration;
+import net.robyf.ms.autoconfigure.feign.CustomFeignErrorDecoder;
 import net.robyf.ms.autoconfigure.swagger.SwaggerConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import({
         ExceptionHandling.class,
         SwaggerConfiguration.class,
+        CustomFeignErrorDecoder.class,
         MicroserviceConfiguration.class
 })
 public class Application {

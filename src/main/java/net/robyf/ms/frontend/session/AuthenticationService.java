@@ -1,8 +1,8 @@
 package net.robyf.ms.frontend.session;
 
 import lombok.extern.slf4j.Slf4j;
+import net.robyf.ms.autoconfigure.feign.CustomFeignClientException;
 import net.robyf.ms.frontend.api.LoginRequest;
-import net.robyf.ms.frontend.client.CustomFeignClientException;
 import net.robyf.ms.frontend.client.LendingServiceClient;
 import net.robyf.ms.frontend.client.UserServiceClient;
 import net.robyf.ms.lending.api.Account;

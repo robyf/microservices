@@ -2,7 +2,7 @@ package net.robyf.ms.frontend.graphql.lending;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import lombok.extern.slf4j.Slf4j;
-import net.robyf.ms.frontend.client.CustomFeignClientException;
+import net.robyf.ms.autoconfigure.feign.CustomFeignClientException;
 import net.robyf.ms.frontend.client.LendingServiceClient;
 import net.robyf.ms.frontend.graphql.ClientException;
 import net.robyf.ms.frontend.security.Principal;

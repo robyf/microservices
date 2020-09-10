@@ -2,13 +2,11 @@ package net.robyf.ms.frontend.graphql.lending;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
-import net.robyf.ms.frontend.client.CustomFeignClientException;
-import net.robyf.ms.frontend.client.CustomProblem;
+import net.robyf.ms.autoconfigure.feign.CustomFeignClientException;
+import net.robyf.ms.autoconfigure.feign.CustomProblem;
 import net.robyf.ms.frontend.client.LendingServiceClient;
-import net.robyf.ms.frontend.client.UserServiceClient;
 import net.robyf.ms.frontend.security.Principal;
 import net.robyf.ms.frontend.security.PrincipalHelper;
-import net.robyf.ms.user.api.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
