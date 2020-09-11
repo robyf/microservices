@@ -1,0 +1,5 @@
+mutation {
+    deposit(amount: 500) {
+        resultingBalance
+    }
+}

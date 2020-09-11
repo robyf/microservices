@@ -1,0 +1,5 @@
+mutation {
+    withdraw(amount: 500) {
+        resultingBalance
+    }
+}
