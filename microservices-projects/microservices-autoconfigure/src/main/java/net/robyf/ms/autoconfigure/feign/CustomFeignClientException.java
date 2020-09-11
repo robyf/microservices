@@ -40,7 +40,7 @@ public class CustomFeignClientException extends HystrixBadRequestException {
         }
     }
 
-    public static class Unauthorized extends CustomFeignClientException {
+    public static class Unauthorized extends CustomFeignClientException { // NOSONAR java:S110 better to have inheritance here
 
         public Unauthorized(final CustomProblem problem) {
             super(problem);
@@ -48,7 +48,7 @@ public class CustomFeignClientException extends HystrixBadRequestException {
 
     }
 
-    public static class Forbidden extends CustomFeignClientException {
+    public static class Forbidden extends CustomFeignClientException { // NOSONAR java:S110 better to have inheritance here
 
         public Forbidden(final CustomProblem problem) {
             super(problem);
@@ -56,7 +56,7 @@ public class CustomFeignClientException extends HystrixBadRequestException {
 
     }
 
-    public static class NotFound extends CustomFeignClientException {
+    public static class NotFound extends CustomFeignClientException { // NOSONAR java:S110 better to have inheritance here
 
         public NotFound(final CustomProblem problem) {
             super(problem);
