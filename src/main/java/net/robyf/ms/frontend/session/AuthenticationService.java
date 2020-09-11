@@ -10,10 +10,8 @@ import net.robyf.ms.user.api.AuthenticateRequest;
 import net.robyf.ms.user.api.AuthenticateResponse;
 import net.robyf.ms.user.api.AuthenticateStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.session.SessionInformation;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
-import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
@@ -50,13 +48,11 @@ public class AuthenticationService {
         }
 
         HttpSession session = httpRequest.getSession(true);
-        SpringSessionBackedSessionRegistry<? extends Session> sessionRegistry = new SpringSessionBackedSessionRegistry<>(sessions);
 
         this.sessions.findByPrincipalName(authResponse.getUser().getId().toString()).values().forEach(s -> {
             if (!s.getId().equals(session.getId())) {
                 log.info("Another session for user: {}", s.getId());
-                SessionInformation info = sessionRegistry.getSessionInformation(s.getId());
-                info.expireNow();
+                this.sessions.deleteById(s.getId());
             }
         });
 
