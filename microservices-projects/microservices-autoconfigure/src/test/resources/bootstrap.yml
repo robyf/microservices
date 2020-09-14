@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: test-application
+    version: testing
+    title: Test application
+    description: An application used to be able to test the autoconfiguration module.
