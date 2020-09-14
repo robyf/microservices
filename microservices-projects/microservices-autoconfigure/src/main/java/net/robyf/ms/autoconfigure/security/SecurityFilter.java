@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
@@ -32,39 +33,42 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String authHeader = httpRequest.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String jwtString = authHeader.substring(7);
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer("frontend-service").build();
-            try {
-                DecodedJWT jwt = verifier.verify(jwtString);
-                String userIdStr = jwt.getClaim(Claims.USER_ID).asString();
-                String accountIdStr = jwt.getClaim(Claims.ACCOUNT_ID).asString();
-                String sessionIdStr = jwt.getClaim(Claims.SESSION_ID).asString();
-                log.debug("Incoming request for user {} account {} session {}", userIdStr, accountIdStr, sessionIdStr);
+        try (HystrixRequestContext context = HystrixRequestContext.initializeContext()) {
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            String authHeader = httpRequest.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String jwtString = authHeader.substring(7);
+                JWTVerifier verifier = JWT.require(algorithm).withIssuer("frontend-service").build();
+                try {
+                    DecodedJWT jwt = verifier.verify(jwtString);
+                    String userIdStr = jwt.getClaim(Claims.USER_ID).asString();
+                    String accountIdStr = jwt.getClaim(Claims.ACCOUNT_ID).asString();
+                    String sessionIdStr = jwt.getClaim(Claims.SESSION_ID).asString();
+                    log.debug("Incoming request for user {} account {} session {}", userIdStr, accountIdStr, sessionIdStr);
 
-                Principal principal = Principal.builder()
-                        .jwt(jwtString)
-                        .userId(UUID.fromString(userIdStr))
-                        .sessionId(UUID.fromString(sessionIdStr))
-                        .accountId(accountIdStr == null ? null : UUID.fromString(accountIdStr))
-                        .build();
+                    Principal principal = Principal.builder()
+                            .jwt(jwtString)
+                            .userId(UUID.fromString(userIdStr))
+                            .sessionId(UUID.fromString(sessionIdStr))
+                            .accountId(accountIdStr == null ? null : UUID.fromString(accountIdStr))
+                            .build();
 
-                Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                    Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    SecurityContextHystrixRequestVariable.getInstance().set(SecurityContextHolder.getContext());
 
-                MDC.put("user-id", userIdStr);
-                MDC.put("session-id", sessionIdStr);
-            } catch (JWTVerificationException jve) {
-                log.error("Error verifying jwt", jve);
+                    MDC.put("user-id", userIdStr);
+                    MDC.put("session-id", sessionIdStr);
+                } catch (JWTVerificationException jve) {
+                    log.error("Error verifying jwt", jve);
+                }
             }
+
+            chain.doFilter(request, response);
+
+            MDC.remove("user-id");
+            MDC.remove("session-id");
         }
-
-        chain.doFilter(request, response);
-
-        MDC.remove("user-id");
-        MDC.remove("session-id");
     }
 
 }
