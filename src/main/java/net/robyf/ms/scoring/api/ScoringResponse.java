@@ -1,7 +1,9 @@
 package net.robyf.ms.scoring.api;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Tolerate;
 
 import javax.validation.constraints.Max;
@@ -12,6 +14,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ScoringResponse {
 
@@ -23,9 +27,5 @@ public class ScoringResponse {
     @Min(0)
     @Max(1)
     private BigDecimal probabilityOfDefault;
-
-    @Tolerate // NOSONAR
-    public ScoringResponse() { // NOSONAR
-    }
 
 }
