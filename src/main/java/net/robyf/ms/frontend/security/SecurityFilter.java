@@ -1,6 +1,9 @@
 package net.robyf.ms.frontend.security;
 
+import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
 import lombok.extern.slf4j.Slf4j;
+import net.robyf.ms.autoconfigure.security.Principal;
+import net.robyf.ms.autoconfigure.security.SecurityContextHystrixRequestVariable;
 import net.robyf.ms.frontend.session.SessionKeys;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
@@ -26,32 +29,35 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpSession session = ((HttpServletRequest) request).getSession(false);
-        if (session != null) {
-            UUID userId = (UUID) session.getAttribute(SessionKeys.USER_ID);
-            UUID accountId = (UUID) session.getAttribute(SessionKeys.ACCOUNT_ID);
-            UUID sessionId = UUID.fromString(session.getId());
-            log.debug("Incoming request for user {} account {} session {}", userId, accountId, sessionId);
+        try (HystrixRequestContext context = HystrixRequestContext.initializeContext()) {
+            HttpSession session = ((HttpServletRequest) request).getSession(false);
+            if (session != null) {
+                UUID userId = (UUID) session.getAttribute(SessionKeys.USER_ID);
+                UUID accountId = (UUID) session.getAttribute(SessionKeys.ACCOUNT_ID);
+                UUID sessionId = UUID.fromString(session.getId());
+                log.debug("Incoming request for user {} account {} session {}", userId, accountId, sessionId);
 
-            Principal principal = Principal.builder()
-                    .userId(userId)
-                    .accountId(accountId)
-                    .sessionId(sessionId)
-                    .build();
+                Principal principal = Principal.builder()
+                        .userId(userId)
+                        .accountId(accountId)
+                        .sessionId(sessionId)
+                        .build();
 
-            Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
-            SecurityContextHolder.getContext().setAuthentication(auth);
+                Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, null);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                SecurityContextHystrixRequestVariable.getInstance().set(SecurityContextHolder.getContext());
 
-            MDC.put("user-id", userId.toString());
-            MDC.put("session-id", sessionId.toString());
-        } else {
-            log.debug("Incoming request without principal");
+                MDC.put("user-id", userId.toString());
+                MDC.put("session-id", sessionId.toString());
+            } else {
+                log.debug("Incoming request without principal");
+            }
+
+            chain.doFilter(request, response);
+
+            MDC.remove("user-id");
+            MDC.remove("session-id");
         }
-
-        chain.doFilter(request, response);
-
-        MDC.remove("user-id");
-        MDC.remove("session-id");
     }
 
 }
