@@ -4,9 +4,9 @@ import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import net.robyf.ms.autoconfigure.feign.CustomFeignClientException;
 import net.robyf.ms.autoconfigure.feign.CustomProblem;
+import net.robyf.ms.autoconfigure.security.Principal;
+import net.robyf.ms.autoconfigure.security.PrincipalHelper;
 import net.robyf.ms.frontend.client.LendingServiceClient;
-import net.robyf.ms.frontend.security.Principal;
-import net.robyf.ms.frontend.security.PrincipalHelper;
 import net.robyf.ms.lending.api.Account;
 import net.robyf.ms.lending.api.AccountStatus;
 import net.robyf.ms.lending.api.CreditDecision;
@@ -20,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.zalando.problem.Status;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -61,7 +60,7 @@ public class LendingQueryTest {
         UUID userId = UUID.randomUUID();
 
         Mockito.when(principalHelper.getPrincipal()).thenReturn(Principal.builder().userId(userId).build());
-        Mockito.when(lendingService.getByUser(userId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(Status.NOT_FOUND).build()));
+        Mockito.when(lendingService.getByUser(userId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(404).build()));
 
         GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/lending/get-lending-account.graphql");
 
@@ -109,7 +108,7 @@ public class LendingQueryTest {
         UUID accountId = UUID.randomUUID();
 
         Mockito.when(principalHelper.getPrincipal()).thenReturn(Principal.builder().userId(userId).accountId(accountId).build());
-        Mockito.when(lendingService.getValidCreditDecision(accountId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(Status.NOT_FOUND).build()));
+        Mockito.when(lendingService.getValidCreditDecision(accountId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(404).build()));
 
         GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/lending/get-valid-credit-decision.graphql");
 
@@ -174,7 +173,7 @@ public class LendingQueryTest {
         UUID accountId = UUID.randomUUID();
 
         Mockito.when(principalHelper.getPrincipal()).thenReturn(Principal.builder().userId(userId).accountId(accountId).build());
-        Mockito.when(lendingService.getEvents(accountId)).thenThrow(new CustomFeignClientException(CustomProblem.builder().status(Status.BAD_REQUEST).build()));
+        Mockito.when(lendingService.getEvents(accountId)).thenThrow(new CustomFeignClientException(CustomProblem.builder().status(400).build()));
 
         GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/lending/get-account-events.graphql");
 

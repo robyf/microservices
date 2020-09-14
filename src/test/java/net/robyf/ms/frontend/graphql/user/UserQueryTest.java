@@ -2,9 +2,9 @@ package net.robyf.ms.frontend.graphql.user;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
+import net.robyf.ms.autoconfigure.security.Principal;
+import net.robyf.ms.autoconfigure.security.PrincipalHelper;
 import net.robyf.ms.frontend.client.UserServiceClient;
-import net.robyf.ms.frontend.security.Principal;
-import net.robyf.ms.frontend.security.PrincipalHelper;
 import net.robyf.ms.user.api.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;

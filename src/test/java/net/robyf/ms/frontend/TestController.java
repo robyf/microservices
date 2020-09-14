@@ -1,6 +1,6 @@
 package net.robyf.ms.frontend;
 
-import net.robyf.ms.frontend.security.PrincipalHelper;
+import net.robyf.ms.autoconfigure.security.PrincipalHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

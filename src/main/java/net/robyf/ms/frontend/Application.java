@@ -3,6 +3,8 @@ package net.robyf.ms.frontend;
 import net.robyf.ms.autoconfigure.ExceptionHandling;
 import net.robyf.ms.autoconfigure.MicroserviceConfiguration;
 import net.robyf.ms.autoconfigure.feign.CustomFeignErrorDecoder;
+import net.robyf.ms.autoconfigure.jackson.JacksonConfiguration;
+import net.robyf.ms.autoconfigure.jackson.JacksonConfigurationLocal;
 import net.robyf.ms.autoconfigure.security.PrincipalHelper;
 import net.robyf.ms.autoconfigure.swagger.SwaggerConfiguration;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +22,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableFeignClients
 @Import({
         ExceptionHandling.class,
+        JacksonConfiguration.class,
+        JacksonConfigurationLocal.class,
         SwaggerConfiguration.class,
         CustomFeignErrorDecoder.class,
         MicroserviceConfiguration.class,

@@ -75,7 +75,7 @@ public class AuthenticationControllerTest {
         LoginRequest request = LoginRequest.builder().email("teppo@iki.fi").password("salasana").build();
 
         Mockito.when(userService.authenticate(Mockito.any())).thenReturn(AuthenticateResponse.builder().status(AuthenticateStatus.SUCCESS).user(User.builder().id(userId).build()).build());
-        Mockito.when(lendingService.getByUser(userId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(Status.NOT_FOUND).build()));
+        Mockito.when(lendingService.getByUser(userId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(404).build()));
 
         String uri = UriComponentsBuilder.fromPath(AuthenticationController.BASE_PATH + AuthenticationController.LOGIN_ENDPOINT).build().toUriString();
         ResponseEntity<Void> get = restTemplate.postForEntity(uri, request, Void.class);
@@ -132,7 +132,7 @@ public class AuthenticationControllerTest {
         LoginRequest request = LoginRequest.builder().email("teppo@iki.fi").password("salasana").build();
 
         Mockito.when(userService.authenticate(Mockito.any())).thenReturn(AuthenticateResponse.builder().status(AuthenticateStatus.SUCCESS).user(User.builder().id(userId).build()).build());
-        Mockito.when(lendingService.getByUser(userId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(Status.NOT_FOUND).build()));
+        Mockito.when(lendingService.getByUser(userId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(404).build()));
 
         TestRestTemplate restTemplate2 = this.testRestTemplate(applicationContext);
 
@@ -164,7 +164,7 @@ public class AuthenticationControllerTest {
         LoginRequest request = LoginRequest.builder().email("teppo@iki.fi").password("salasana").build();
 
         Mockito.when(userService.authenticate(Mockito.any())).thenReturn(AuthenticateResponse.builder().status(AuthenticateStatus.SUCCESS).user(User.builder().id(userId).build()).build());
-        Mockito.when(lendingService.getByUser(userId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(Status.NOT_FOUND).build()));
+        Mockito.when(lendingService.getByUser(userId)).thenThrow(new CustomFeignClientException.NotFound(CustomProblem.builder().status(404).build()));
 
         String uri = UriComponentsBuilder.fromPath(AuthenticationController.BASE_PATH + AuthenticationController.LOGIN_ENDPOINT).build().toUriString();
         ResponseEntity<Void> get = restTemplate.postForEntity(uri, request, Void.class);

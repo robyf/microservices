@@ -6,11 +6,11 @@ import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import net.robyf.ms.autoconfigure.feign.CustomFeignClientException;
 import net.robyf.ms.autoconfigure.feign.CustomProblem;
+import net.robyf.ms.autoconfigure.security.Principal;
+import net.robyf.ms.autoconfigure.security.PrincipalHelper;
 import net.robyf.ms.frontend.api.LoginRequest;
 import net.robyf.ms.frontend.client.LendingServiceClient;
 import net.robyf.ms.frontend.client.UserServiceClient;
-import net.robyf.ms.frontend.security.Principal;
-import net.robyf.ms.frontend.security.PrincipalHelper;
 import net.robyf.ms.frontend.session.AuthenticationController;
 import net.robyf.ms.lending.api.Account;
 import net.robyf.ms.lending.api.AccountStatus;
@@ -20,7 +20,6 @@ import net.robyf.ms.lending.api.MonetaryTransactionResponse;
 import net.robyf.ms.user.api.AuthenticateResponse;
 import net.robyf.ms.user.api.AuthenticateStatus;
 import net.robyf.ms.user.api.User;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -29,8 +28,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -101,7 +98,7 @@ public class LendingMutationTest {
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
 
-        CustomProblem problem = CustomProblem.builder().status(Status.BAD_REQUEST).title("Bad request").detail("Bad request").build();
+        CustomProblem problem = CustomProblem.builder().status(400).title("Bad request").detail("Bad request").build();
 
         Mockito.when(principalHelper.getPrincipal()).thenReturn(Principal.builder().userId(userId).accountId(accountId).build());
         Mockito.when(lendingService.createCreditDecision(Mockito.any(), Mockito.any())).thenThrow(new CustomFeignClientException(problem));
@@ -146,7 +143,7 @@ public class LendingMutationTest {
         UUID accountId = UUID.randomUUID();
         UUID creditDecisionId = UUID.randomUUID();
 
-        CustomProblem problem = CustomProblem.builder().status(Status.BAD_REQUEST).title("Bad request").detail("Bad request").build();
+        CustomProblem problem = CustomProblem.builder().status(400).title("Bad request").detail("Bad request").build();
 
         Mockito.when(principalHelper.getPrincipal()).thenReturn(Principal.builder().userId(userId).accountId(accountId).build());
         Mockito.when(lendingService.acceptCreditDecision(accountId, creditDecisionId)).thenThrow(new CustomFeignClientException(problem));
@@ -186,7 +183,7 @@ public class LendingMutationTest {
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
 
-        CustomProblem problem = CustomProblem.builder().status(Status.BAD_REQUEST).title("Bad request").detail("Bad request").build();
+        CustomProblem problem = CustomProblem.builder().status(400).title("Bad request").detail("Bad request").build();
 
         Mockito.when(principalHelper.getPrincipal()).thenReturn(Principal.builder().userId(userId).accountId(accountId).build());
         Mockito.when(lendingService.withdraw(Mockito.eq(userId), Mockito.eq(accountId), Mockito.any())).thenThrow(new CustomFeignClientException(problem));
@@ -223,7 +220,7 @@ public class LendingMutationTest {
         UUID userId = UUID.randomUUID();
         UUID accountId = UUID.randomUUID();
 
-        CustomProblem problem = CustomProblem.builder().status(Status.BAD_REQUEST).title("Bad request").detail("Bad request").build();
+        CustomProblem problem = CustomProblem.builder().status(400).title("Bad request").detail("Bad request").build();
 
         Mockito.when(principalHelper.getPrincipal()).thenReturn(Principal.builder().userId(userId).accountId(accountId).build());
         Mockito.when(lendingService.deposit(Mockito.eq(userId), Mockito.eq(accountId), Mockito.any())).thenThrow(new CustomFeignClientException(problem));
@@ -242,7 +239,7 @@ public class LendingMutationTest {
     public void testCreateLendingAccountBadRequest() throws Exception {
         UUID userId = UUID.randomUUID();
 
-        CustomProblem problem = CustomProblem.builder().status(Status.BAD_REQUEST).title("Bad request").detail("Bad request").build();
+        CustomProblem problem = CustomProblem.builder().status(400).title("Bad request").detail("Bad request").build();
 
         Mockito.when(principalHelper.getPrincipal()).thenReturn(Principal.builder().userId(userId).build());
         Mockito.when(lendingService.createForUser(userId)).thenThrow(new CustomFeignClientException(problem));
