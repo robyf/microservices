@@ -10,7 +10,7 @@ import org.zalando.problem.Status;
 public class CustomProblem {
 
     String title;
-    Status status;
+    int status;
     String detail;
 
     @Tolerate // NOSONAR
