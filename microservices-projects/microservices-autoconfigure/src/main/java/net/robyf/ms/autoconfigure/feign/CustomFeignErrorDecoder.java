@@ -17,7 +17,7 @@ import java.io.IOException;
 @Slf4j
 public class CustomFeignErrorDecoder implements ErrorDecoder {
 
-    private final ErrorDecoder defaultDecoder = new Default();
+    private ErrorDecoder defaultDecoder = new Default();
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -29,7 +29,7 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
             log.debug("feign error with problem {}", methodKey);
             if (isClientErrorStatus(response.status())) {
                 log.debug("client error");
-
+                log.debug("objectMapper {}", objectMapper);
                 try (JsonParser parser = objectMapper.createParser(response.body().asInputStream())) {
                     CustomProblem problem = parser.readValueAs(CustomProblem.class);
                     log.debug("parsed problem {}", problem);
@@ -42,7 +42,21 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
         return this.defaultDecoder.decode(methodKey, response);
     }
 
-    private static boolean isClientErrorStatus(final int status) {
+    /**
+     * For unit tests only.
+     */
+    void setDefaultDecoder(final ErrorDecoder decoder) {
+        this.defaultDecoder = decoder;
+    }
+
+    /**
+     * For unit tests only.
+     */
+    void resetDefaultDecoder() {
+        this.defaultDecoder = new Default();
+    }
+
+    static boolean isClientErrorStatus(final int status) {
         return status >= 400 && status < 500;
     }
 

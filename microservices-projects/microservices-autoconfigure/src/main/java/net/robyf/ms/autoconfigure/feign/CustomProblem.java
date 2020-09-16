@@ -1,19 +1,18 @@
 package net.robyf.ms.autoconfigure.feign;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.Tolerate;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class CustomProblem {
 
     String title;
     int status;
     String detail;
-
-    @Tolerate // NOSONAR
-    public CustomProblem() { // NOSONAR
-    }
 
 }
