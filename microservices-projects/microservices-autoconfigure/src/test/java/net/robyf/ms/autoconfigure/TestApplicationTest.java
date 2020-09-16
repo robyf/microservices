@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,9 @@ public class TestApplicationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @LocalServerPort
+    private int serverPort;
 
     @Test
     public void testSecureEndPointWithoutJwtReturns401() throws Exception {
@@ -77,6 +81,30 @@ public class TestApplicationTest {
         ResponseEntity<CustomProblem> get = restTemplate.exchange(uri, HttpMethod.GET, request, CustomProblem.class);
         assertThat(get.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         assertThat(get.getBody()).isNotNull();
+    }
+
+    @Test
+    public void testJwtIsPropagated() throws Exception {
+        Principal principal = Principal.builder().userId(UUID.randomUUID()).accountId(UUID.randomUUID()).sessionId(UUID.randomUUID()).build();
+        String jwt = new JwtGenerator().generateJwt(principal);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwt);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        String uri = UriComponentsBuilder.fromPath(TestController.BASE_PATH + TestController.CURRENT_USER_ENDPOINT).build().toUriString();
+        ResponseEntity<String> get = restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
+        assertThat(get.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(get.getBody()).isEqualTo(principal.getUserId().toString());
+    }
+
+    @Test
+    public void testMissingJwtDoesNotCreateFailures() throws Exception {
+        String uri = UriComponentsBuilder.fromPath(TestController.BASE_PATH + TestController.CURRENT_USER_ENDPOINT).build().toUriString();
+        ResponseEntity<String> get = restTemplate.getForEntity(uri, String.class);
+        assertThat(get.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(get.getBody()).isEqualTo("guest");
     }
 
 }

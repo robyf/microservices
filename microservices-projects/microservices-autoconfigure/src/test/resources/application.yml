@@ -1,0 +1,7 @@
+server:
+  servlet:
+    context-path: /
+
+another:
+  ribbon:
+    listOfServers: http://localhost:${local.server.port}/
