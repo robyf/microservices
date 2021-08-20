@@ -11,7 +11,7 @@ class RepositoryFeature implements Feature {
             jcenter()
             maven {
                 name = "MavenLocal"
-                url = "/Users/roberto/work/microservices/repo"
+                url = System.getenv("MICROSERVICES_REPO_PATH")
             }
         }
         if (project.getPlugins().hasPlugin('maven-publish')) {
@@ -19,7 +19,7 @@ class RepositoryFeature implements Feature {
                 repositories {
                     maven {
                         name = "MavenLocal"
-                        url = "/Users/roberto/work/microservices/repo"
+                        url = System.getenv("MICROSERVICES_REPO_PATH")
                     }
                 }
             }
