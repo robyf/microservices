@@ -2,7 +2,7 @@ buildscript {
     repositories {
         jcenter()
         maven {
-            url = "/Users/roberto/work/microservices/repo"
+            url = System.getenv("MICROSERVICES_REPO_PATH")
         }
     }
     dependencies {
