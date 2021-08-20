@@ -6,7 +6,7 @@ description = "Microservices Dependency Management"
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.session:spring-session-bom:Corn-SR2'
+        mavenBom 'org.springframework.session:spring-session-bom:Corn-SR6'
     }
     dependencies {
         dependency group: 'org.zalando', name: 'problem-spring-web', version: '0.25.2'
