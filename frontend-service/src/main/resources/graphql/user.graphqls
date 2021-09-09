@@ -1,0 +1,16 @@
+extend type Query {
+    # The current logged in user
+    currentUser: User
+}
+
+# A user.
+type User {
+    # The user unique identifier.
+    id: ID!
+    # First name.
+    firstName: String!
+    # Last name.
+    lastName: String!
+    # Email address.
+    email: String!
+}

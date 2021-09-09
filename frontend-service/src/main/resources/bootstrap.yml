@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: frontend-service
+    version: ${version}
+    title: Frontend service
+    description: Provides services to the frontend app.

@@ -1,0 +1,61 @@
+extend type Query {
+    # Lending account for current user
+    lendingAccount: LendingAccount
+
+    validCreditDecision: CreditDecision
+
+    accountEvents: [Event!]!
+}
+
+extend type Mutation {
+    createLendingAccount: LendingAccount
+
+    createCreditDecision(income: Float!): CreditDecision
+    acceptCreditDecision(creditDecisionId: ID!): CreditDecision
+
+    withdraw(amount: Float!): MonetaryTransactionResponse
+    deposit(amount: Float!): MonetaryTransactionResponse
+}
+
+enum LendingAccountStatus {
+    NEW
+    ACTIVE
+    FROZEN
+    CLOSED
+}
+
+enum CreditDecisionStatus {
+    PENDING
+    APPROVED
+    DECLINED
+    EXPIRED
+}
+
+# A lending account.
+type LendingAccount {
+    # The account unique identifier.
+    id: ID!
+    # Status.
+    status: LendingAccountStatus!
+    # Current account balance.
+    balance: Float!
+}
+
+type CreditDecision {
+    id: ID!
+    status: CreditDecisionStatus!
+    positive: Boolean!
+    amount: Float!
+}
+
+type MonetaryTransactionResponse {
+    resultingBalance: Float!
+}
+
+type Event {
+    id: ID!
+    time: Timestamp!
+    type: Int!
+    amount: Float
+    resultingBalance: Float
+}

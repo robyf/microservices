@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url = System.getenv("MICROSERVICES_REPO_PATH")
+        }
+    }
+    dependencies {
+        classpath "net.robyf.ms:microservices-gradle-plugin:Akaa.SR1-SNAPSHOT"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'io.franzbecker.gradle-lombok' version '4.0.0'
+    id 'maven-publish'
+}
+
+apply plugin: "net.robyf.ms.gradle"
+
+dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix-dashboard'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    implementation group: 'org.springframework.session', name: 'spring-session-data-redis'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis'
+    implementation group: 'net.robyf.ms', name: 'microservices-autoconfigure'
+    implementation group: 'org.zalando', name: 'problem-spring-web'
+    implementation group: 'io.springfox', name: 'springfox-boot-starter'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui'
+    implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api'
+    implementation group: 'com.graphql-java', name: 'graphql-spring-boot-starter'
+    implementation group: 'com.graphql-java', name: 'graphql-java-tools'
+    implementation group: 'com.graphql-java', name: 'graphiql-spring-boot-starter'
+    implementation group: 'com.auth0', name: 'java-jwt'
+
+    implementation group: 'net.robyf.ms', name: 'user-service-api', version: '1.0-SNAPSHOT'
+    implementation group: 'net.robyf.ms', name: 'lending-service-api', version: '1.0-SNAPSHOT'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testImplementation group: 'com.graphql-java', name: 'graphql-spring-boot-starter-test'
+    testImplementation group: 'junit', name: 'junit'
+}
+
+bootRun {
+    systemProperties = [
+            'spring.profiles.active': 'local'
+    ]
+}

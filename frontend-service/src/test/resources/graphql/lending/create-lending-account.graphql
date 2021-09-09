@@ -1,0 +1,7 @@
+mutation {
+    createLendingAccount {
+        id
+        status
+        balance
+    }
+}

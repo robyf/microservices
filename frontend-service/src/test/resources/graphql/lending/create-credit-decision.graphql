@@ -1,0 +1,8 @@
+mutation {
+    createCreditDecision(income: 5000) {
+        id
+        status
+        positive
+        amount
+    }
+}

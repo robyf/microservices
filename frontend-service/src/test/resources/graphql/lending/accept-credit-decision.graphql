@@ -1,0 +1,8 @@
+mutation acceptCreditDecision($id: ID!) {
+    acceptCreditDecision(creditDecisionId: $id) {
+        id
+        status
+        positive
+        amount
+    }
+}
