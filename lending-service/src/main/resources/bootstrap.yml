@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: lending-service
+    version: ${version}
+    title: Lending service
+    description: Manages loans and everything connected to them.
