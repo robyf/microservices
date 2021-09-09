@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: scoring-service
+    version: ${version}
+    title: Scoring service
+    description: Determines if users can be granted a loan or not.
