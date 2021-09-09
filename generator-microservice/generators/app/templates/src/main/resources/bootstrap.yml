@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: <%= name %>
+    version: ${version}
+    title: <%= title %>
+    description: <%= description %>
