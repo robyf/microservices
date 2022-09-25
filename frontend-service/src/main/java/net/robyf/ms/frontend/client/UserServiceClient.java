@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
-@FeignClient(name = "user", url = "http://localhost:7000/user-service")
+@FeignClient(name = "user", url = "http://localhost:7010/user-service")
 public interface UserServiceClient {
 
     @PostMapping(value = "/v1/users/authenticate")

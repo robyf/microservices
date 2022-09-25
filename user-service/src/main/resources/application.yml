@@ -27,8 +27,8 @@ spring:
 
 server:
   port:
-    7000
+    7010
 
 management:
   server:
-    port: 7001
+    port: 7011
