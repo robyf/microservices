@@ -20,6 +20,6 @@ As the code has been written in 2018 it doesn't use up-to-date dependencies but 
 
 ## Requirements
 
-- a Redis instance run on port 6379 (see the script inside [docker/redis] to start one in docker).
-- a Zipkin instance run on port 9411 (see the script inside [docker/zipkin] to start one in docker).
+- a Redis instance run on port 6379 (see the script inside [docker/redis](docker/redis) to start one in docker).
+- a Zipkin instance run on port 9411 (see the script inside [docker/zipkin](docker/zipkin) to start one in docker).
 - an environment variable `MICROSERVICES_REPO_PATH` pointing to a directory in the local file system where to host an artifact repository.
