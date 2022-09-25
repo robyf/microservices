@@ -2,7 +2,8 @@
 
 This repository contains an example implementation of microservices for a fictional lending company.
 I created this in 2018 when I was discussing as a potential employment to showcase what can be done with Java, Sprint-boot and GraphQL.
-As the code has been written in 2018 it doesn't use up-to-date dependencies but I share this in case it can be useful to someone.
+
+*As the code has been written in 2018 it doesn't use up-to-date dependencies but I share this in case it can be useful to someone.*
 
 ## Project structure
 
