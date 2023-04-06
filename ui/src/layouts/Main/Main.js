@@ -13,7 +13,7 @@ import { User } from '../../types';
 import { logout } from '../../api/session';
 import { logout as logoutAction } from '../../redux/actions';
 
-import logo from '../../ac-full-logo.svg';
+import Logo from '../../ACFullLogo';
 
 const Main = props => {
   const { children, history, logoutAction, user } = props;
@@ -27,17 +27,21 @@ const Main = props => {
     push('/');
   }
 
+/*
+<img
+  alt="Awesome Credit"
+  src={Logo}
+  height="30"
+  className="d-inline-block align-top"
+/>
+*/
+
   return (
     <Container>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Navbar.Brand>
           <Link to="/dashboard">
-            <img
-              alt="Awesome Credit"
-              src={logo}
-              height="30"
-              className="d-inline-block align-top"
-            />
+            <Logo />
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

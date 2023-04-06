@@ -11,7 +11,7 @@ import { currentUser } from '../../api/user';
 import { setUser } from '../../redux/actions';
 
 import './Login.css';
-import logo from '../../ac-logo.svg';
+import Logo from '../../ACLogo';
 
 const Login = ({ setUser, history }) => {
 
@@ -57,10 +57,12 @@ const Login = ({ setUser, history }) => {
     }
   };
 
+//         <img className="mb-4" src={logo} alt="Awesome Credit" width="72" height="72" />
+
   return (
     <div className="text-center">
       <form className="form-signin">
-        <img className="mb-4" src={logo} alt="Awesome Credit" width="72" height="72" />
+        <Logo />
         <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
         {error && <Alert variant="danger">Login failed</Alert>}
         <label htmlFor="inputEmail" className="sr-only">Email address</label>
